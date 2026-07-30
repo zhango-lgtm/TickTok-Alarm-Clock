@@ -26,39 +26,44 @@ def fivetests():
 
 @app.route("/submit_timings", methods=["POST"])
 def submit_game_times():
-    alarm_react = int(request.form.get("alarm_react", 0))
-    g1 = int(request.form.get("g1", 0))
-    g2 = int(request.form.get("g2", 0))
-    g3 = int(request.form.get("g3", 0))
-    g4 = int(request.form.get("g4", 0))
-    g5 = int(request.form.get("g5", 0))
-    user_name = request.form.get("user_name", "Anonymous")
+    try:
+        alarm_react = int(request.form.get("alarm_react", 0))
+        g1 = int(request.form.get("g1", 0))
+        g2 = int(request.form.get("g2", 0))
+        g3 = int(request.form.get("g3", 0))
+        g4 = int(request.form.get("g4", 0))
+        g5 = int(request.form.get("g5", 0))
+        user_name = request.form.get("user_name", "Anonymous")
 
-    total_time = g1 + g2 + g3 + g4 + g5
+        total_time = g1 + g2 + g3 + g4 + g5
 
-    df = pd.read_sql("SELECT MAX(run_id) as max_id FROM runs", con=engine)
-    new_run_id = 1 if df["max_id"][0] is None else int(df["max_id"][0]) + 1
+        df = pd.read_sql("SELECT MAX(run_id) as max_id FROM runs", con=engine)
+        new_run_id = 1 if df["max_id"][0] is None else int(df["max_id"][0]) + 1
     
-    new_row = pd.DataFrame([{
-        "run_id": new_run_id,
-        "user_name": user_name,
-        "alarm_react": alarm_react,
-        "g1": g1,
-        "g2": g2,
-        "g3": g3,
-        "g4": g4,
-        "g5": g5,
-        "total_time": total_time
-    }])
-    new_row.to_sql("runs", con=engine, if_exists="append", index=False)
+        new_row = pd.DataFrame([{
+            "run_id": new_run_id,
+            "user_name": user_name,
+            "alarm_react": alarm_react,
+            "g1": g1,
+            "g2": g2,
+            "g3": g3,
+            "g4": g4,
+            "g5": g5,
+            "total_time": total_time
+        }])
+        new_row.to_sql("runs", con=engine, if_exists="append", index=False)
 
-    return redirect(
-        url_for("stats",
-        alarm_react=alarm_react,
-        user_name=user_name,
-        g1=g1, g2=g2, g3=g3, g4=g4, g5=g5,
-        total_time=total_time
+        return redirect(
+            url_for("stats",
+            alarm_react=alarm_react,
+            user_name=user_name,
+            g1=g1, g2=g2, g3=g3, g4=g4, g5=g5,
+            total_time=total_time
     ))
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return f"<pre>{traceback.format_exc()}</pre>"
 
 
 @app.route("/stats")
