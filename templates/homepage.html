@@ -2,6 +2,8 @@
 <html>
 <head>
     <title>Ultimate Online Alarm CLock</title>
+
+    <!-- Link style sheets -->
     <link rel="stylesheet" href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
@@ -13,24 +15,28 @@
     </header>
 
     <main>
+        <!-- Display current date and time -->
         <section class="clock-display">
             <div id="current-time">00:00:00 AM</div>
             <div id="current-date">Loading date...</div>
         </section>
 
         <section>
+            <!-- User inputs their name for leaderboard stats -->
             <label>Name for Leaderboard:</label>
-            <input type="text" id="player-name-input" maxlength="20" placeholder="Anonymous">
+            <input type="text" id="player-name-input" maxlength="20" placeholder="Anonymous"> <!-- User can choose to remain anonymous -->
         </section>
 
+        <!-- Make an alarm -->
         <section class="alarm-builder">
             <form id="alarm-form">
                 <div class="form-group">
                     <div class="input-wrapper">
                         <label for="alarm-time">Set Time</label>
-                        <input type="time" id="alarm-time" required>
+                        <input type="time" id="alarm-time" required> <!-- User must set an alarm in order to move on -->
                     </div>
                     <div class="input-wrapper">
+                        <!-- Message included with alarm -->
                         <label for="alarm-label">Label</label>
                         <input type="text" id="alarm-label" placeholder="eg., Wake up!">
                     </div>
@@ -39,6 +45,8 @@
             </form>
 
             <div class="input-wrapper">
+                
+                <!-- Dropdown menu of all alarm sound choices -->
                 <label for="alarm-sound-select">Sound</label>
                 <select id="alarm-sound-select">
                     <option value="https://files.catbox.moe/07bj0m.mp3">I Am a Coconut</option>
@@ -49,6 +57,7 @@
                 </select>
             </div>
 
+            <!-- Display all alarms made -->
             <section class="alarms-list">
                 <h2>Scheduled Alarms</h2>
                 <div id="alarms-deck"></div>
@@ -57,6 +66,7 @@
         </section>
     </main>
 
+    <!-- Display pop-up when alarm goes off -->
     <div class="modal-overlay" id="trigger-modal">
         <div class="modal">
             <h2>Wake Up!!</h2>
@@ -70,6 +80,7 @@
         </div>
     </div>
 
+    <!-- Play the audio based on which alarm sound was selected -->
     <audio
         id="alarm-sound"
         loop
