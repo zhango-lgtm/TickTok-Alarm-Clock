@@ -3,7 +3,7 @@
 <head>
     <style>
         .hidden {
-            display:none;
+            display: none !important;
         }
         #moving-button {
             position:absolute; 
@@ -152,6 +152,14 @@
         const g5Box = document.getElementById("game5");
         const finishBtn = document.getElementById("finish-button");
 
+        function hideFinishButton() {
+            finishBtn.classList.add("hidden");
+        }
+
+        function showFinishButton() {
+            finishBtn.classList.remove("hidden");
+        }
+
         const g1Timing = document.getElementById("g1-timing");
         const g2Timing = document.getElementById("g2-timing");
         const g3Timing = document.getElementById("g3-timing");
@@ -185,6 +193,7 @@
             g3Box.classList.add("hidden");
             g4Box.classList.add("hidden");
             g5Box.classList.add("hidden");
+            hideFinishButton();
         }
 
         // Test button logic
@@ -415,6 +424,7 @@
     let g5TimerInterval;
 
     function startGame5() {
+        hideFinishButton();
         clearInterval(g5TimerInterval);
         gameStartTimes.g5 = Date.now();
         g5Clicks = 0;
@@ -422,7 +432,6 @@
         g5CountText.innerText = "Clicks: 0/100";
         g5TimerText.innerText = "Remaining Time: 30s";
         g5ResultText.innerText = "";
-        finishBtn.classList.add("hidden");
 
         g5TimerInterval = setInterval(function(){
             g5TimeLeft -= 1;
@@ -445,7 +454,7 @@
             clearInterval(g5TimerInterval);
             g5Timing.value = Math.floor((Date.now()-gameStartTimes.g5)/1000);
             g5ResultText.innerText = "✅ Completed!";
-            finishBtn.classList.remove("hidden");
+            showFinishButton();
         }
     });
 
