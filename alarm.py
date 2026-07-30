@@ -18,7 +18,7 @@ def fivetests():
     input_username = request.form.get("user_name", "")
     selected_sound = request.form.get("alarm-sound", "")
     alarm_react_secs = request.form.get("time-to-finish", 0)
-    return render_template("fivetests.html", audio_filename=alarm_sound, alarm_react_secs=alarm_react_secs, input_username=input_username)
+    return render_template("fivetests.html", audio_filename=selected_sound, alarm_react_secs=alarm_react_secs, input_username=input_username)
 
 
 @app.route("/submit_timings", methods=["POST"])
@@ -119,15 +119,15 @@ def stats():
         g4=g4,
         g5=g5,
         total_time=total_time,
-        pAlarm=pAlarm,
-        pG1=pG1,
-        pG2=pG2,
-        pG3=pG3,
-        pG4=pG4,
-        pG5=pG5,
-        user_rank=user_rank,
-        user_best_game=user_best_game,
-        user_best_p=user_best_p,
+        alarm_percentile=pAlarm,
+        g1_percentile=pG1,
+        g2_percentile=pG2,
+        g3_percentile=pG3,
+        g4_percentile=pG4,
+        g5_percentile=pG5,
+        rank=user_rank,
+        best_game=user_best_game,
+        best_percentile=user_best_p,
         leaderboard=leaderboard
     )
         
