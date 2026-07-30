@@ -334,7 +334,7 @@
                     g2Timing.value = Math.floor((Date.now() - gameStartTimes.g2)/1000);
                     g2Box.classList.add("hidden");
                     g3Box.classList.remove("hidden");
-                    gameStartTimes.g3 = Date.now();
+                    startGame3();
                 }
 
                 generateMathQuestion();
@@ -354,10 +354,39 @@
 
          
 
-    let ansReverse = "reilrae peels ot esimorp I"
+    const phrases = [
+        "I promise to sleep earlier",
+        "Always finish your homework",
+        "Drink plenty of water today",
+        "Never skip your breakfast",
+        "Time to wake up already",
+        "Practice makes perfect everyday",
+        "Remember to stretch often",
+        "Stay focused and keep going",
+        "Take a deep breath first",
+        "Believe in yourself always"
+    ];
+
+    let currentPhrase = "";
+    let ansReverse = "";
+       
     const g3SubmitBtn = document.getElementById("g3-submit")
     const g3ResultText = document.getElementById("g3-result"); 
     const g3Input = document.getElementById("g3-answer");
+
+    function startGame3() {
+        gameStartTimes.g3 = Date.now();
+
+        currentPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+
+        ansReverse = currentPhrase.split("").reverse().join("");
+
+        document.getElementById("g3-title").innerText =
+            "Game3: Write the sentence backwards:\n" + currentPhrase;
+
+        g3Input.value = "";
+        g3ResultText.innerText = "";
+    }
 
     g3SubmitBtn.addEventListener("click", function(){
         let userText = g3Input.value.trim();
