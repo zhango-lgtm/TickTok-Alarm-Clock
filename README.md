@@ -9,12 +9,11 @@
     4. Guess a random number between 1–20 within 5 attempts
     5. Rapidly click a target bar 100 times in 30 seconds
 - Persistent record of game completion times for each user attempt
-- Sound effects for correct and incorrect answers
-- Temporary in-tab alarm storage: alarms remain saved while your browser tab stays open
+- Sound effects for correct answers
 - Built with a clean pixel-friendly NES.css visual style
 
 ## How it Works 
-  1. Navigate to the homepage and set one or more alarms. Alarms are stored temporarily in your browser tab.
+  1. Navigate to the homepage and set an alarm. You choose which time you want it to go off at as well as what alarm audio you want. 
   2. When an alarm triggers, a looping alert audio plays, and you are redirected to the game page.
   3. Complete all five mini-games in order. Failed games trigger an automatic retry.
   4. Once every challenge is finished, submit your results. The alarm audio stops, and your timing statistics are saved.
