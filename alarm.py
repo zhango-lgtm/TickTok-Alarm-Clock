@@ -13,7 +13,7 @@ user_stats = {}
 def homepage():
     return render_template("homepage.html")
 
-@app.route("/fivetests", methods=["POST"])
+@app.route("/fivetests", methods=["GET","POST"])
 def fivetests():
     input_username = request.form.get("user_name", "")
     selected_sound = request.form.get("alarm-sound", "")
