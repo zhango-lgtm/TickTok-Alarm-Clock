@@ -3,9 +3,10 @@
 <head>
     <title>Ultimate Online Alarm CLock</title>
     <link rel="stylesheet" href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+    <div class="container">
     <header>
         <h1>TickTok</h1>
     </header>
@@ -28,7 +29,7 @@
                         <input type="text" id="alarm-label" placeholder="eg., Wake up!">
                     </div>
                 </div>
-                <button type="submit">Set Alarm</button>
+                <button class="nes-btn is-primary" type="submit">Set Alarm</button>
             </form>
 
             <div class="input-wrapper">
@@ -57,7 +58,7 @@
             <form id="finish-form" action="/game" method="post">
                 <input type="hidden" name="time-to-finish" id="seconds-to-click" value=0>
                 <input type="hidden" name="alarm-sound" id="alarm-sound-hidden" value=0>
-                <button class="dismiss-btn" id="stop-alarm-btn">Dismiss Alarm</button>
+                <button class="nes-btn is-error" id="stop-alarm-btn">Dismiss Alarm</button>
             </form>
         </div>
     </div>
@@ -230,6 +231,6 @@
         updateClock();
 
     </script>
-
+    </div>
 </body>
 </html>
