@@ -93,3 +93,7 @@ body {
         transform: scale(1);
     }
 }
+
+.game-box {
+    text-align: center;
+}
