@@ -4,8 +4,6 @@ import statistics
 import pandas as pd
 import os
 
-engine = create_engine("sqlite:///ticktok.db")
-
 app = Flask(__name__)
 app.secret_key = "randomsecretkey123456"
 DATABASE = "sqlite:///ticktok.db"
@@ -27,18 +25,17 @@ def fivetests():
 
 @app.route("/submit_timings", methods=["POST"])
 def submit_game_times():
-    try:
-        alarm_react = int(request.form.get("alarm_react", 0))
-        g1 = int(request.form.get("g1", 0))
-        g2 = int(request.form.get("g2", 0))
-        g3 = int(request.form.get("g3", 0))
-        g4 = int(request.form.get("g4", 0))
-        g5 = int(request.form.get("g5", 0))
-        user_name = request.form.get("user_name", "Anonymous")
+    alarm_react = int(request.form.get("alarm_react", 0))
+    g1 = int(request.form.get("g1", 0))
+    g2 = int(request.form.get("g2", 0))
+    g3 = int(request.form.get("g3", 0))
+    g4 = int(request.form.get("g4", 0))
+    g5 = int(request.form.get("g5", 0))
+    user_name = request.form.get("user_name", "Anonymous")
 
-        total_time = g1 + g2 + g3 + g4 + g5
+    total_time = g1 + g2 + g3 + g4 + g5
 
-    df = pd.read_sql("SELECT MAX(run_id) as max_id FROM runs", con=DATABASE)
+    df = pd.read_sql("SELECT MAX(run_id) AS max_id FROM runs", con=db_engine)
     new_run_id = 1 if df["max_id"][0] is None else int(df["max_id"][0]) + 1
     
     new_row = pd.DataFrame([{
@@ -54,17 +51,13 @@ def submit_game_times():
     }])
     new_row.to_sql("runs", con=db_engine, if_exists="append", index=False)
 
-        return redirect(
-            url_for("stats",
-            alarm_react=alarm_react,
-            user_name=user_name,
-            g1=g1, g2=g2, g3=g3, g4=g4, g5=g5,
-            total_time=total_time
+    return redirect(
+        url_for("stats",
+        alarm_react=alarm_react,
+        user_name=user_name,
+        g1=g1, g2=g2, g3=g3, g4=g4, g5=g5,
+        total_time=total_time
     ))
-    except Exception as e:
-        import traceback
-        traceback.print_exc()
-        return f"<pre>{traceback.format_exc()}</pre>"
 
 
 @app.route("/stats")
@@ -78,7 +71,7 @@ def stats():
     user_name = request.args.get("user_name", "Anonymous")
     total_time = int(request.args.get("total_time", 0))
 
-    all_records = pd.read_sql("SELECT * FROM runs", con = engine)
+    all_records = pd.read_sql("SELECT * FROM runs", con = DATABASE)
 
     def get_better_percent(user_time, column):
         total_num = all_records.shape[0]
@@ -94,7 +87,7 @@ def stats():
     pG4 = get_better_percent(g4, "g4")
     pG5 = get_better_percent(g5, "g5")
 
-    leaderboard_dt = pd.read_sql("SELECT user_name, total_time FROM runs ORDER BY total_time ASC", con=engine)
+    leaderboard_dt = pd.read_sql("SELECT user_name, total_time FROM runs ORDER BY total_time ASC", con=DATABASE)
     leaderboard = leaderboard_dt.to_dict("records")
     rank_list = []
     for data in leaderboard:
@@ -145,8 +138,3 @@ def stats():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=int(os.getenv('PORT', 3000)))
-
-
-
-
-
