@@ -101,6 +101,7 @@
             <thead>
                 <tr>
                     <th>Rank</th>
+                    <th>User</th>
                     <th>Total Time</th>
                 </tr>
             </thead>
@@ -110,6 +111,7 @@
                 {% for run in leaderboard %}
                 <tr>
                     <td>{{ loop.index }}</td>
+                    <td>{{ run.user_name or 'Anonymous' }}</td>
                     <td>{{ run.total_time }} sec</td>
                 </tr>
                 {% endfor %}
