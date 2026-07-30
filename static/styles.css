@@ -2,6 +2,10 @@ body {
     background: linear-gradient(#5c94fc, #cfe8ff);
     min-height: 100vh;
     font-family: "Press Start 2P";
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .container {
