@@ -93,6 +93,7 @@
     <div id='game2' class = 'game-box hidden'>
         <h3 class = "game-title">Game2: Answer 10 math questions (30s limit)</h3>
         <p id="g2-count-text" class='count-text'>Finished: 0/10</p>
+        
         <p id="g2-timer" class="timer">Remaining Time: 30s</p>
         <p id="g2-question"></p>
         <input type="number" class="answer-input" id = "g2-answer" placeholder="Enter your answer">
@@ -344,10 +345,10 @@
     let ansReverse = "reilrae peels ot esimorp I"
     const g3SubmitBtn = document.getElementById("g3-submit")
     const g3ResultText = document.getElementById("g3-result"); 
-    const g3UserInput = document.getElementById("g3-answer");
+    const g3Input = document.getElementById("g3-answer");
 
     g3SubmitBtn.addEventListener("click", function(){
-        let userText = g3UserInput.value.trim();
+        let userText = g3Input.value.trim();
         if(userText === ansReverse){
             g3Timing.value = Math.floor((Date.now() - gameStartTimes.g3)/1000);
             g3Box.classList.add("hidden");
@@ -370,12 +371,12 @@
     let tries = 5;
 
     const tryCountdown = document.getElementById("g4-count-text")
-    const userInput = document.getElementById("g4-answer")
+    const g4Input = document.getElementById("g4-answer")
     const g4SubmitBtn = document.getElementById("g4-submit")
     const hintText = document.getElementById("hint-text")
 
     g4SubmitBtn.addEventListener("click", function(){
-        let userGuess = parseInt(userInput.value);
+        let userGuess = parseInt(g4Input.value);
         tries -= 1;
         tryCountdown.innerText = "Remaining tries: " + tries;
 
