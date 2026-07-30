@@ -13,7 +13,7 @@
 - Temporary in-tab alarm storage: alarms remain saved while your browser tab stays open
 - Built with a clean pixel-friendly NES.css visual style
 
-## 🎮 How it Works 
+## How it Works 
   1. Navigate to the homepage and set one or more alarms. Alarms are stored temporarily in your browser tab.
   2. When an alarm triggers, a looping alert audio plays, and you are redirected to the game page.
   3. Complete all five mini-games in order. Failed games trigger an automatic retry.
