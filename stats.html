@@ -3,109 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TickTok - Results</title>
+    <title>TickTok Results</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
 <body>
 
-    <header>
-        <h1>TickTok Results</h1>
-        <p>Here's how you compared to everyone else!</p>
-    </header>
+<div class="container">
 
-    <hr>
+    <h1 class="nes-text is-primary">TickTok Results</h1>
+    <p>Here's how you compared with everyone else!</p>
 
-    <section>
-        <h2>Alarm Reaction</h2>
+    <br>
 
-        <p><strong>Your Time:</strong> {{ alarm_react }} seconds</p>
+    <!-- Alarm Reaction -->
+    <section class="nes-container with-title is-rounded">
+        <p class="title">Alarm Reaction</p>
 
-        <p>
-            ⚡ You were faster than
-            <strong>{{ alarm_percentile }}%</strong>
-            of users.
-        </p>
+        <p><strong>Your Time:</strong> {{ alarm_react }} sec</p>
+
+        <progress
+            class="nes-progress is-success"
+            value="{{ alarm_percentile }}"
+            max="100">
+        </progress>
+
+        <p>You were faster than <strong>{{ alarm_percentile }}%</strong> of users.</p>
     </section>
 
-    <hr>
+    <br>
 
-    <!-- Game Results -->
-    <section>
-
-        <h2>Five Tests</h2>
+    <!-- Five Games -->
+    <section class="nes-container with-title is-rounded">
+        <p class="title">Five Tests</p>
 
         <h3>Game 1</h3>
-        <p>Your Time: {{ g1 }} sec</p>
+        <p>{{ g1 }} sec</p>
+        <progress class="nes-progress is-primary" value="{{ g1_percentile }}" max="100"></progress>
         <p>Better than {{ g1_percentile }}% of users</p>
 
+        <hr>
+
         <h3>Game 2</h3>
-        <p>Your Time: {{ g2 }} sec</p>
+        <p>{{ g2 }} sec</p>
+        <progress class="nes-progress is-success" value="{{ g2_percentile }}" max="100"></progress>
         <p>Better than {{ g2_percentile }}% of users</p>
 
+        <hr>
+
         <h3>Game 3</h3>
-        <p>Your Time: {{ g3 }} sec</p>
+        <p>{{ g3 }} sec</p>
+        <progress class="nes-progress is-warning" value="{{ g3_percentile }}" max="100"></progress>
         <p>Better than {{ g3_percentile }}% of users</p>
 
+        <hr>
+
         <h3>Game 4</h3>
-        <p>Your Time: {{ g4 }} sec</p>
+        <p>{{ g4 }} sec</p>
+        <progress class="nes-progress is-error" value="{{ g4_percentile }}" max="100"></progress>
         <p>Better than {{ g4_percentile }}% of users</p>
 
+        <hr>
+
         <h3>Game 5</h3>
-        <p>Your Time: {{ g5 }} sec</p>
+        <p>{{ g5 }} sec</p>
+        <progress class="nes-progress is-pattern" value="{{ g5_percentile }}" max="100"></progress>
         <p>Better than {{ g5_percentile }}% of users</p>
 
     </section>
 
-    <hr>
+    <br>
 
-    <!-- Total Time -->
-    <section>
+    <!-- Overall -->
+    <section class="nes-container with-title is-rounded">
+        <p class="title">Overall Performance</p>
 
-        <h2>🏁 Overall Performance</h2>
+        <h2>{{ total_time }} seconds</h2>
 
-        <p>
-            <strong>Total Time:</strong>
-            {{ total_time }} seconds
-        </p>
+        <p>Your leaderboard rank:</p>
 
-        <p>
-            <strong>Leaderboard Rank:</strong>
+        <h2 class="nes-text is-warning">
             #{{ rank }}
-        </p>
+        </h2>
 
     </section>
 
-    <hr>
+    <br>
 
     <!-- Leaderboard -->
-    <section>
+    <section class="nes-container with-title is-rounded">
+        <p class="title">Top 10 Fastest Runs</p>
 
-        <h2>Fastest Overall Runs</h2>
+        <table class="nes-table is-bordered is-centered">
 
-        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Total Time</th>
+                </tr>
+            </thead>
 
-            <tr>
-                <th>Rank</th>
-                <th>Total Time (sec)</th>
-            </tr>
+            <tbody>
 
-            {% for run in leaderboard %}
-            <tr>
-                <td>{{ loop.index }}</td>
-                <td>{{ run.total_time }}</td>
-            </tr>
-            {% endfor %}
+                {% for run in leaderboard %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ run.total_time }} sec</td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
 
         </table>
 
     </section>
 
-    <hr>
+    <br>
 
     <!-- Summary -->
-    <section>
-
-        <h2>Summary</h2>
+    <section class="nes-container with-title is-rounded">
+        <p class="title">Summary</p>
 
         <p>
             <strong>Best Game:</strong>
@@ -122,8 +141,12 @@
     <br>
 
     <a href="/">
-        <button>Try Again</button>
+        <button class="nes-btn is-primary">
+            Try Again
+        </button>
     </a>
+
+</div>
 
 </body>
 </html>
