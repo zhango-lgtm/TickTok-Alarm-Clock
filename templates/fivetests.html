@@ -330,6 +330,13 @@
                 g2CountText.innerText = "❌Finished: "+g2FinishedQ+"/10, try again";
             }
 
+        g2Input.addEventListener("keydown", function(e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                g2SubmitBtn.click();
+            }
+});
+
         })
          
 
@@ -348,6 +355,12 @@
         }
         else{
             g3ResultText.innerText = "Wrong reverse text, try again";
+        }
+
+    g3Input.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            g3SubmitBtn.click();
         }
     })
 
@@ -379,6 +392,12 @@
         }
         else{
             hintText.innerText = userGuess < randNum ? "Try higher" : "Try lower";
+        }
+
+    g4Input.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            g4SubmitBtn.click();
         }
     })
 
