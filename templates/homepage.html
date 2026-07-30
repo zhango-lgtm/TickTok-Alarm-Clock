@@ -89,9 +89,14 @@
     </audio>
 
     <script>
+
+        // Store all alarms currently created by the user
         let alarms = [];
+
+        // Reference to whichever alarm is currently ringing
         let currentAlarm = null;
 
+        // Cache frequently used HTML elements
         const currentTimeDisplay = document.getElementById('current-time');
         const currentDateDisplay = document.getElementById('current-date');
         const alarmForm = document.getElementById('alarm-form');
@@ -121,6 +126,7 @@
         }
         // ================================================================
 
+        // Updates the displayed clock every second and checks whether any alarms should begin ringing
         function updateClock() {
             const now = new Date();
 
@@ -152,6 +158,7 @@
             checkAlarms(matchingString);
         }
 
+        // Compare the current time against every scheduled alarm
         function checkAlarms(currentTime24hr) {
             alarms.forEach((alarm, index) => {
                 if (alarm.time === currentTime24hr && !alarm.triggered) {
@@ -160,6 +167,7 @@
             });
         }
 
+        // Starts the selected alarm sound, records the reaction start time, and displays the wake-up modal
         function triggerAlarm(alarm, index) {
             alarms[index].triggered = true;
             alarms[index].startTime = Date.now();
@@ -182,6 +190,7 @@
             });
         }
 
+        // Refresh the list of alarms currently shown on the page
         function renderAlarms() {
             // Only display alarms that have NOT triggered yet
             const pendingAlarms = alarms.filter(alarm => !alarm.triggered);
@@ -213,6 +222,7 @@
             });
         }
 
+        // Create and save a new alarm whenever the user submits the form
         alarmForm.addEventListener('submit', (e) => {
             e.preventDefault();
 
@@ -237,12 +247,14 @@
             alarmTimeInput.value = '';
         });
 
+        // Remove an alarm from both memory and session storage
         window.deleteAlarm = function (id) {
             alarms = alarms.filter(alarm => alarm.id !== id);
             saveAlarmsToStorage();
             renderAlarms();
         }
 
+        // Stop the alarm and submit the user's reaction time to the five-test challenge page
         stopAlarmBtn.addEventListener('click', (e) => {
             e.preventDefault();
 
@@ -253,6 +265,7 @@
                 secondsHidden.value = seconds;
                 soundHidden.value = currentAlarm.sound;
 
+                // Copy the player's chosen display name into the hidden form before submitting it to the server
                 copyPlayerName();
 
                 currentAlarm = null;
@@ -266,8 +279,9 @@
             const typedName = document.getElementById("player-name-input").value.trim();
             document.getElementById("hidden-user-name").value = typedName;
         }
-
-        // Initialize page
+        
+        // -------- Page Startup --------
+        // Restore saved alarms, display them, and begin updating the clock every second
         loadAlarmsFromStorage();
         renderAlarms();
         setInterval(updateClock, 1000);
