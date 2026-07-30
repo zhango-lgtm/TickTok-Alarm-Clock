@@ -1,435 +1,435 @@
 <!DOCTYPE html>
 <html>
 <head>
- <style>
- .hidden {
- display:none;
- }
- #moving-button {
- position:absolute; 
- padding:10px;
- }
+    <style>
+        .hidden {
+            display:none;
+        }
+        #moving-button {
+            position:absolute; 
+            padding:10px;
+        }
 
- #moving-fake-button {
- position:absolute; 
- padding:10px;
- margin: 40px;
- }
- .submit-answer {
- display: inline-flex;
- align-items: center;
- justify-content: center;
- padding: 10px 18px;
- border-radius: 10px;
- background: #4a90e2;
- color: white;
- font-weight: 600;
- cursor: pointer;
- box-shadow: 0 8px 0 #2c6ebc;
- transition: transform 0.1s ease, box-shadow 0.1s ease;
- }
- .submit-answer:active {
- transform: translateY(4px);
- box-shadow: 0 4px 0 #2c6ebc;
- }
- .game-title {
- text-align: center;
- }
- 
- .count-text {
- text-align: center;
- }
+        #moving-fake-button {
+            position:absolute; 
+            padding:10px;
+            margin: 40px;
+        }
+        .submit-answer {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 18px;
+            border-radius: 10px;
+            background: #4a90e2;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #2c6ebc;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+        .submit-answer:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #2c6ebc;
+        }
+        .game-title {
+            text-align: center;
+        }
+        
+        .count-text {
+            text-align: center;
+        }
 
- .timer {
- text-align: center;
- }
+        .timer {
+            text-align: center;
+        }
 
- .answer-input {
- display: block;
- width: 300px;
- margin: 18px auto;
- padding: 14px 18px;
- border: 1px solid rgba(0, 0, 0, 0.16);
- border-radius: 16px;
- background: #f9fbff;
- box-shadow: 1px 3px rgba(0,0,0,0.08);
- font-size: 16px;
- font-family: inherit;
- color: #111;
- transition: border-color 0.2s ease, box-shadow 0.2s ease;
- }
+        .answer-input {
+            display: block;
+            width: 300px;
+            margin: 18px auto;
+            padding: 14px 18px;
+            border: 1px solid rgba(0, 0, 0, 0.16);
+            border-radius: 16px;
+            background: #f9fbff;
+            box-shadow: 1px 3px rgba(0,0,0,0.08);
+            font-size: 16px;
+            font-family: inherit;
+            color: #111;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
 
- .answer-input:focus {
- border-color: #7298ff;
- box-shadow: 0 0 0 4px rgba(114, 149, 246, 0.18);
- }
- </style>
+        .answer-input:focus {
+            border-color: #7298ff;
+            box-shadow: 0 0 0 4px rgba(114, 149, 246, 0.18);
+        }
+    </style>
 </head>
 <body>
- <audio id="mainAlarmAudio" autoplay loop>
- {% if audio_filename %}
- <source src="{{audio_filename}}">
- {% endif %}
- </audio>
+    <audio id="mainAlarmAudio" autoplay loop>
+        {% if audio_filename %}
+            <source src="{{audio_filename}}">
+        {% endif %}
+    </audio>
 
- <div class="test-control">
- <h4>Quick Test Buttons (Jump to any game directly)</h4>
- <button id="testG1">Test Game1</button>
- <button id="testG2">Test Game2</button>
- <button id="testG3">Test Game3</button>
- <button id="testG4">Test Game4</button>
- <button id="testG5">Test Game5</button>
- </div>
+    <div class="test-control">
+        <h4>Quick Test Buttons (Jump to any game directly)</h4>
+        <button id="testG1">Test Game1</button>
+        <button id="testG2">Test Game2</button>
+        <button id="testG3">Test Game3</button>
+        <button id="testG4">Test Game4</button>
+        <button id="testG5">Test Game5</button>
+    </div>
 
- <div class="page2-container">
+   <div class="page2-container">
 
- <div id='game1' class = 'game-box'>
- <h3 class = "game-title">Game1: Click moving button 10 times</h3>
- <p id = 'g1-count-text' class='count-text'>Click: 0/10</p>
- <div class="submit-answer" id="moving-button">(+1) Click Me!</div>
- <div class="submit-answer" id="moving-fake-button">(-1) Click 67!</div>
- </div>
+    <div id='game1' class = 'game-box'>
+        <h3 class = "game-title">Game1: Click moving button 10 times</h3>
+        <p id = 'g1-count-text' class='count-text'>Click: 0/10</p>
+        <div class="submit-answer" id="moving-button">(+1) Click Me!</div>
+        <div class="submit-answer" id="moving-fake-button">(-1) Click 67!</div>
+    </div>
 
- <div id='game2' class = 'game-box hidden'>
- <h3 class = "game-title">Game2: Answer 10 math questions (30s limit)</h3>
- <p id="g2-count-text" class='count-text'>Finished: 0/10</p>
- <p id="g2-timer" class="timer">Remaining Time: 30s</p>
- <p id="g2-question"></p>
- <input type="number" class="answer-input" id = "g2-answer" placeholder="Enter your answer">
- <button class="submit-answer" id="g2-submit">Submit</button>
- </div>
+    <div id='game2' class = 'game-box hidden'>
+        <h3 class = "game-title">Game2: Answer 10 math questions (30s limit)</h3>
+        <p id="g2-count-text" class='count-text'>Finished: 0/10</p>
+        <p id="g2-timer" class="timer">Remaining Time: 30s</p>
+        <p id="g2-question"></p>
+        <input type="number" class="answer-input" id = "g2-answer" placeholder="Enter your answer">
+        <button class="submit-answer" id="g2-submit">Submit</button>
+   </div>
 
- <div id='game3' class = 'game-box hidden'>
- <h3 class = "game-title">Game3: Write the sentence backwards: I promise to sleep earlier</h3>
- <input type="text" class="answer-input" id = "g3-answer" placeholder="Enter your answer">
- <button class="submit-answer" id="g3-submit">Submit</button>
- <p id = "g3-result"></p>
- </div>
+   <div id='game3' class = 'game-box hidden'>
+        <h3 class = "game-title">Game3: Write the sentence backwards: I promise to sleep earlier</h3>
+        <input type="text" class="answer-input" id = "g3-answer" placeholder="Enter your answer">
+        <button class="submit-answer" id="g3-submit">Submit</button>
+        <p id = "g3-result"></p>
+   </div>
 
- <div id='game4' class = 'game-box hidden'>
- <h3 class = "game-title">Game4: Guess random number (1-20), max 5 tries</h3>
- <p id="g4-count-text" class='count-text'>Remaining tries:5</p>
- <p id="hint-text"></p>
- <input type="number" class="answer-input" id = "g4-answer" placeholder="Enter your answer" min="1" max="20">
- <button class="submit-answer" id="g4-submit">Submit</button>
- </div>
+   <div id='game4' class = 'game-box hidden'>
+        <h3 class = "game-title">Game4: Guess random number (1-20), max 5 tries</h3>
+        <p id="g4-count-text" class='count-text'>Remaining tries:5</p>
+        <p id="hint-text"></p>
+        <input type="number" class="answer-input" id = "g4-answer" placeholder="Enter your answer" min="1" max="20">
+        <button class="submit-answer" id="g4-submit">Submit</button>
+   </div>
 
- <div id='game5' class='game-box hidden'>
- <h3 class="game-title">Game5: Click the bar 100 times in 30 seconds</h3>
- <p id="g5-count-text" class='count-text'>Clicks: 0/100</p>
- <p id="g5-timer" class="timer">Remaining Time: 30s</p>
- <div id="g5-bar" class="submit-answer">Click Here</div>
- <p id="g5-result"></p>
- <form id="finish-form" action="/submit_timings" method="post" onsubmit="stopAudio()">
- <input type="hidden" name="g1" id="g1-timing" value="0">
- <input type="hidden" name="g2" id="g2-timing" value="0">
- <input type="hidden" name="g3" id="g3-timing" value="0">
- <input type="hidden" name="g4" id="g4-timing" value="0">
- <input type="hidden" name="g5" id="g5-timing" value="0">
- <button type="submit" id="finish-button" class="submit-answer hidden">Finish</button>
- </form>
- </div>
+   <div id='game5' class='game-box hidden'>
+        <h3 class="game-title">Game5: Click the bar 100 times in 30 seconds</h3>
+        <p id="g5-count-text" class='count-text'>Clicks: 0/100</p>
+        <p id="g5-timer" class="timer">Remaining Time: 30s</p>
+        <div id="g5-bar" class="submit-answer">Click Here</div>
+        <p id="g5-result"></p>
+        <form id="finish-form" action="/submit_timings" method="post" onsubmit="stopAudio()">
+            <input type="hidden" name="g1" id="g1-timing" value="0">
+            <input type="hidden" name="g2" id="g2-timing" value="0">
+            <input type="hidden" name="g3" id="g3-timing" value="0">
+            <input type="hidden" name="g4" id="g4-timing" value="0">
+            <input type="hidden" name="g5" id="g5-timing" value="0">
+            <button type="submit" id="finish-button" class="submit-answer hidden">Finish</button>
+        </form>
+   </div>
 
- <audio id="click-correct-sound" src="https://files.catbox.moe/drdptj.mp3"></audio>
- <audio id="click-wrong-sound" src="https://files.catbox.moe/o2oeg1.mp3"></audio>
+   <audio id="click-correct-sound" src="https://files.catbox.moe/drdptj.mp3"></audio>
+   <audio id="click-wrong-sound" src="https://files.catbox.moe/o2oeg1.mp3"></audio>
 
- <script>
+   <script>
 
- let gameStartTimes = {
- g1: null,
- g2: null,
- g3: null,
- g4: null,
- g5: null
- };
- const g1Box = document.getElementById("game1");
- const g2Box = document.getElementById("game2");
- const g3Box = document.getElementById("game3");
- const g4Box = document.getElementById("game4");
- const g5Box = document.getElementById("game5");
- const finishBtn = document.getElementById("finish-button");
+        let gameStartTimes = {
+            g1: null,
+            g2: null,
+            g3: null,
+            g4: null,
+            g5: null
+        };
+        const g1Box = document.getElementById("game1");
+        const g2Box = document.getElementById("game2");
+        const g3Box = document.getElementById("game3");
+        const g4Box = document.getElementById("game4");
+        const g5Box = document.getElementById("game5");
+        const finishBtn = document.getElementById("finish-button");
 
- const g1Timing = document.getElementById("g1-timing");
- const g2Timing = document.getElementById("g2-timing");
- const g3Timing = document.getElementById("g3-timing");
- const g4Timing = document.getElementById("g4-timing");
- const g5Timing = document.getElementById("g5-timing");
+        const g1Timing = document.getElementById("g1-timing");
+        const g2Timing = document.getElementById("g2-timing");
+        const g3Timing = document.getElementById("g3-timing");
+        const g4Timing = document.getElementById("g4-timing");
+        const g5Timing = document.getElementById("g5-timing");
 
- const rightSound = document.getElementById("click-correct-sound");
- const wrongSound = document.getElementById("click-wrong-sound");
+        const rightSound = document.getElementById("click-correct-sound");
+        const wrongSound = document.getElementById("click-wrong-sound");
 
- document.getElementById("moving-button").addEventListener("click", function(){
- rightSound.currentTime = 0;
- rightSound.play().catch(() => {});
- setTimeout(() => {
- rightSound.pause();
- rightSound.currentTime = 0;
- }, 1000);
- });
+        document.getElementById("moving-button").addEventListener("click", function(){
+            rightSound.currentTime = 0;
+            rightSound.play().catch(() => {});
+            setTimeout(() => {
+                rightSound.pause();
+                rightSound.currentTime = 0;
+            }, 1000);
+        });
 
- document.getElementById("moving-fake-button").addEventListener("click", function(){
- wrongSound.currentTime = 0;
- wrongSound.play().catch(() => {});
- setTimeout(() => {
- wrongSound.pause();
- wrongSound.currentTime = 0;
- }, 1000);
- });
+        document.getElementById("moving-fake-button").addEventListener("click", function(){
+            wrongSound.currentTime = 0;
+            wrongSound.play().catch(() => {});
+            setTimeout(() => {
+                wrongSound.pause();
+                wrongSound.currentTime = 0;
+            }, 1000);
+        });
 
- function hideAllGame() {
- g1Box.classList.add("hidden");
- g2Box.classList.add("hidden");
- g3Box.classList.add("hidden");
- g4Box.classList.add("hidden");
- g5Box.classList.add("hidden");
- }
+        function hideAllGame() {
+            g1Box.classList.add("hidden");
+            g2Box.classList.add("hidden");
+            g3Box.classList.add("hidden");
+            g4Box.classList.add("hidden");
+            g5Box.classList.add("hidden");
+        }
 
- // Test button logic
- document.getElementById("testG1").onclick = function() {
- hideAllGame();
- g1Box.classList.remove("hidden");
- g1ClickNum = 0;
- g1CountText.innerText = "Click: 0/10";
- gameStartTimes.g1 = Date.now();
- }
- document.getElementById("testG2").onclick = function() {
- hideAllGame();
- g2Box.classList.remove("hidden");
- startGame2();
- }
- document.getElementById("testG3").onclick = function() {
- hideAllGame();
- g3Box.classList.remove("hidden");
- g3UserInput.value = "";
- g3ResultText.innerText = "";
- gameStartTimes.g3 = Date.now();
- }
- document.getElementById("testG4").onclick = function() {
- hideAllGame();
- g4Box.classList.remove("hidden");
- tries = 5;
- randNum = Math.floor(Math.random() * 20) + 1;
- tryCountdown.innerText = "Remaining tries: " + tries;
- hintText.innerText = "";
- gameStartTimes.g4 = Date.now();
- }
- document.getElementById("testG5").onclick = function() {
- hideAllGame();
- g5Box.classList.remove("hidden");
- startGame5();
- }
+        // Test button logic
+        document.getElementById("testG1").onclick = function() {
+            hideAllGame();
+            g1Box.classList.remove("hidden");
+            g1ClickNum = 0;
+            g1CountText.innerText = "Click: 0/10";
+            gameStartTimes.g1 = Date.now();
+        }
+        document.getElementById("testG2").onclick = function() {
+            hideAllGame();
+            g2Box.classList.remove("hidden");
+            startGame2();
+        }
+        document.getElementById("testG3").onclick = function() {
+            hideAllGame();
+            g3Box.classList.remove("hidden");
+            g3UserInput.value = "";
+            g3ResultText.innerText = "";
+            gameStartTimes.g3 = Date.now();
+        }
+        document.getElementById("testG4").onclick = function() {
+            hideAllGame();
+            g4Box.classList.remove("hidden");
+            tries = 5;
+            randNum = Math.floor(Math.random() * 20) + 1;
+            tryCountdown.innerText = "Remaining tries: " + tries;
+            hintText.innerText = "";
+            gameStartTimes.g4 = Date.now();
+        }
+        document.getElementById("testG5").onclick = function() {
+            hideAllGame();
+            g5Box.classList.remove("hidden");
+            startGame5();
+        }
 
- let g1ClickNum = 0
- const g1MoveBtn = document.getElementById("moving-button");
- const g1CountText = document.getElementById("g1-count-text");
- const g1FakeBtn = document.getElementById("moving-fake-button");
- gameStartTimes.g1 = Date.now();
+        let g1ClickNum = 0
+        const g1MoveBtn = document.getElementById("moving-button");
+        const g1CountText = document.getElementById("g1-count-text");
+        const g1FakeBtn = document.getElementById("moving-fake-button");
+        gameStartTimes.g1 = Date.now();
 
- function refreshPosG1(){
- let x = Math.random() * 500;
- let y = Math.random() * 500;
- let width = 80 - Math.random() * 40;
- let height = 40 - Math.random() * 20;
+        function refreshPosG1(){
+            let x = Math.random() * 500;
+            let y = Math.random() * 500;
+            let width = 80 - Math.random() * 40;
+            let height = 40 - Math.random() * 20;
 
- g1MoveBtn.style.left = x + "px";
- g1MoveBtn.style.top = y + "px";
- g1MoveBtn.style.width = width + "px";
- g1MoveBtn.style.height = height + "px"
+            g1MoveBtn.style.left = x + "px";
+            g1MoveBtn.style.top = y + "px";
+            g1MoveBtn.style.width = width + "px";
+            g1MoveBtn.style.height = height + "px"
 
- let x1 = Math.random() * 500;
- let y1 = Math.random() * 500;
- let width1 = 80 - Math.random() * 40;
- let height1 = 40 - Math.random() * 20;
+            let x1 = Math.random() * 500;
+            let y1 = Math.random() * 500;
+            let width1 = 80 - Math.random() * 40;
+            let height1 = 40 - Math.random() * 20;
 
- g1FakeBtn.style.left = x1 + "px";
- g1FakeBtn.style.top = y1 + "px";
- g1FakeBtn.style.width = width1 + "px";
- g1FakeBtn.style.height = height1 + "px"
- }
+            g1FakeBtn.style.left = x1 + "px";
+            g1FakeBtn.style.top = y1 + "px";
+            g1FakeBtn.style.width = width1 + "px";
+            g1FakeBtn.style.height = height1 + "px"
+        }
 
- //setInterval(refreshPosG1, 800);
+        //setInterval(refreshPosG1, 800);
 
- g1MoveBtn.addEventListener("click", function(){
- g1ClickNum += 1;
- g1CountText.innerText = "Click: "+g1ClickNum+"/10";
- if(g1ClickNum == 10){
- g1Timing.value = Math.floor((Date.now() - gameStartTimes.g1)/1000);
- g1Box.classList.add("hidden");
- g2Box.classList.remove("hidden");
- startGame2();
- }
+        g1MoveBtn.addEventListener("click", function(){
+            g1ClickNum += 1;
+            g1CountText.innerText = "Click: "+g1ClickNum+"/10";
+            if(g1ClickNum == 10){
+                g1Timing.value = Math.floor((Date.now() - gameStartTimes.g1)/1000);
+                g1Box.classList.add("hidden");
+                g2Box.classList.remove("hidden");
+                startGame2();
+            }
 
- })
+        })
 
- g1FakeBtn.addEventListener("click", function() {
- g1ClickNum -= 1;
- g1CountText.innerText = "Click: "+g1ClickNum+"/10";
- })
+        g1FakeBtn.addEventListener("click", function() {
+            g1ClickNum -= 1;
+            g1CountText.innerText = "Click: "+g1ClickNum+"/10";
+        })
 
- let ans = 0;
- let g2FinishedQ = 0;
- let g2TimeLeft = 30;
- let g2TimerInterval;
+        let ans = 0;
+        let g2FinishedQ = 0;
+        let g2TimeLeft = 30;
+        let g2TimerInterval;
 
- const g2TimerText = document.getElementById("g2-timer");
- const g2QText = document.getElementById("g2-question");
- const g2Input = document.getElementById("g2-answer");
- const g2SummitBtn = document.getElementById("g2-submit");
- const g2CountText = document.getElementById("g2-count-text");
+        const g2TimerText = document.getElementById("g2-timer");
+        const g2QText = document.getElementById("g2-question");
+        const g2Input = document.getElementById("g2-answer");
+        const g2SummitBtn = document.getElementById("g2-submit");
+        const g2CountText = document.getElementById("g2-count-text");
 
- function generateMathQuestion(){
- a = Math.floor(Math.random() * 10) + 1;
- b = Math.floor(Math.random() * 10) + 1;
- ans = a * b;
- g2QText.innerText = a + " X " + b + " = ?";
- g2Input.value = "";
- }
+        function generateMathQuestion(){
+            a = Math.floor(Math.random() * 10) + 1;
+            b = Math.floor(Math.random() * 10) + 1;
+            ans = a * b;
+            g2QText.innerText = a + " X " + b + " = ?";
+            g2Input.value = "";
+        }
 
- function startGame2(){
- //clearInterval(g2TimerInterval);
- //gameStartTimes.g2 = Date.now();
- g2FinishedQ = 0;
- g2TimeLeft = 30;
- g2TimerText.innerText = "Remaining Time: 30s";
- g2CountText.innerText = "Finished: 0/10";
- clearInterval(g5TimerInterval);
+        function startGame2(){
+            //clearInterval(g2TimerInterval);
+            //gameStartTimes.g2 = Date.now();
+            g2FinishedQ = 0;
+            g2TimeLeft = 30;
+            g2TimerText.innerText = "Remaining Time: 30s";
+            g2CountText.innerText = "Finished: 0/10";
+            clearInterval(g5TimerInterval);
 
- g2TimerInterval = setInterval(function(){
- g2TimeLeft -= 1;
- g2TimerText.innerText = "Remaining Time: " + g2TimeLeft + "s";
+            g2TimerInterval = setInterval(function(){
+                g2TimeLeft -= 1;
+                g2TimerText.innerText = "Remaining Time: " + g2TimeLeft + "s";
 
- if(g2TimeLeft<=0){
- clearInterval(g2TimerInterval);
- alert("You failed! Now you will have to retry!")
- startGame2();
- }
- },1000);
- generateMathQuestion();
- }
+                if(g2TimeLeft<=0){
+                    clearInterval(g2TimerInterval);
+                    alert("You failed! Now you will have to retry!")
+                    startGame2();
+                }
+            },1000);
+            generateMathQuestion();
+        }
 
- g2SummitBtn.addEventListener("click", function() {
- let userAns = parseInt(g2Input.value);
+        g2SummitBtn.addEventListener("click", function() {
+            let userAns = parseInt(g2Input.value);
 
- if(userAns == ans){
- g2FinishedQ += 1;
- g2CountText.innerText = "✅Finished: "+g2FinishedQ+"/10";
+            if(userAns == ans){
+                g2FinishedQ += 1;
+                g2CountText.innerText = "✅Finished: "+g2FinishedQ+"/10";
 
- if(g2FinishedQ==10){
- clearInterval(g2TimerInterval);
- g2Timing.value = Math.floor((Date.now() - gameStartTimes.g2)/1000);
- g2Box.classList.add("hidden");
- g3Box.classList.remove("hidden");
- gameStartTimes.g3 = Date.now();
- }
+                if(g2FinishedQ==10){
+                    clearInterval(g2TimerInterval);
+                    g2Timing.value = Math.floor((Date.now() - gameStartTimes.g2)/1000);
+                    g2Box.classList.add("hidden");
+                    g3Box.classList.remove("hidden");
+                    gameStartTimes.g3 = Date.now();
+                }
 
- generateMathQuestion();
- }
- else{
- g2CountText.innerText = "❌Finished: "+g2FinishedQ+"/10, try again";
- }
+                generateMathQuestion();
+            }
+            else{
+                g2CountText.innerText = "❌Finished: "+g2FinishedQ+"/10, try again";
+            }
 
- })
- 
+        })
+         
 
- let ansReverse = "reilrae peels ot esimorp I"
- const g3SubmitBtn = document.getElementById("g3-submit")
- const g3ResultText = document.getElementById("g3-result"); 
- const g3UserInput = document.getElementById("g3-answer");
+    let ansReverse = "reilrae peels ot esimorp I"
+    const g3SubmitBtn = document.getElementById("g3-submit")
+    const g3ResultText = document.getElementById("g3-result"); 
+    const g3UserInput = document.getElementById("g3-answer");
 
- g3SubmitBtn.addEventListener("click", function(){
- let userText = g3UserInput.value.trim();
- if(userText === ansReverse){
- g3Timing.value = Math.floor((Date.now() - gameStartTimes.g3)/1000);
- g3Box.classList.add("hidden");
- g4Box.classList.remove("hidden");
- gameStartTimes.g4 = Date.now();
- }
- else{
- g3ResultText.innerText = "Wrong reverse text, try again";
- }
- })
+    g3SubmitBtn.addEventListener("click", function(){
+        let userText = g3UserInput.value.trim();
+        if(userText === ansReverse){
+            g3Timing.value = Math.floor((Date.now() - gameStartTimes.g3)/1000);
+            g3Box.classList.add("hidden");
+            g4Box.classList.remove("hidden");
+            gameStartTimes.g4 = Date.now();
+        }
+        else{
+            g3ResultText.innerText = "Wrong reverse text, try again";
+        }
+    })
 
- let randNum = Math.floor(Math.random()*20)+1;
- let tries = 5;
+    let randNum = Math.floor(Math.random()*20)+1;
+    let tries = 5;
 
- const tryCountdown = document.getElementById("g4-count-text")
- const userInput = document.getElementById("g4-answer")
- const g4SubmitBtn = document.getElementById("g4-submit")
- const hintText = document.getElementById("hint-text")
+    const tryCountdown = document.getElementById("g4-count-text")
+    const userInput = document.getElementById("g4-answer")
+    const g4SubmitBtn = document.getElementById("g4-submit")
+    const hintText = document.getElementById("hint-text")
 
- g4SubmitBtn.addEventListener("click", function(){
- let userGuess = parseInt(userInput.value);
- tries -= 1;
- tryCountdown.innerText = "Remaining tries: " + tries;
+    g4SubmitBtn.addEventListener("click", function(){
+        let userGuess = parseInt(userInput.value);
+        tries -= 1;
+        tryCountdown.innerText = "Remaining tries: " + tries;
 
- if(userGuess === randNum){
- g4Timing.value = Math.floor((Date.now()-gameStartTimes.g4)/1000);
- g4Box.classList.add("hidden");
- g5Box.classList.remove("hidden");
- startGame5();
- }
- else if(tries <=0) {
- alert("Out of tries! Restarting game 4.");
- tries = 5;
- randNum = Math.floor(Math.random() * 20) + 1;
- tryCountdown.innerText = "Remaining tries: " + tries;
- hintText.innerText = ""
- }
- else{
- hintText.innerText = userGuess < randNum ? "Try higher" : "Try lower";
- }
- })
+        if(userGuess === randNum){
+            g4Timing.value = Math.floor((Date.now()-gameStartTimes.g4)/1000);
+            g4Box.classList.add("hidden");
+            g5Box.classList.remove("hidden");
+            startGame5();
+        }
+        else if(tries <=0) {
+            alert("Out of tries! Restarting game 4.");
+            tries = 5;
+            randNum = Math.floor(Math.random() * 20) + 1;
+            tryCountdown.innerText = "Remaining tries: " + tries;
+            hintText.innerText = ""
+        }
+        else{
+            hintText.innerText = userGuess < randNum ? "Try higher" : "Try lower";
+        }
+    })
 
- const g5TimerText = document.getElementById("g5-timer");
- const g5CountText = document.getElementById("g5-count-text");
- const g5Bar = document.getElementById("g5-bar");
- const g5ResultText = document.getElementById("g5-result");
+    const g5TimerText = document.getElementById("g5-timer");
+    const g5CountText = document.getElementById("g5-count-text");
+    const g5Bar = document.getElementById("g5-bar");
+    const g5ResultText = document.getElementById("g5-result");
 
- let g5Clicks = 0;
- let g5TimeLeft = 30;
- let g5TimerInterval;
+    let g5Clicks = 0;
+    let g5TimeLeft = 30;
+    let g5TimerInterval;
 
- function startGame5() {
- //clearInterval(g5TimerInterval);
- //gameStartTimes.g5 = Date.now();
- g5Clicks = 0;
- g5TimeLeft = 30;
- g5CountText.innerText = "Clicks: 0/100";
- g5TimerText.innerText = "Remaining Time: 30s";
- g5ResultText.innerText = "";
- finishBtn.classList.add("hidden");
+    function startGame5() {
+        //clearInterval(g5TimerInterval);
+        //gameStartTimes.g5 = Date.now();
+        g5Clicks = 0;
+        g5TimeLeft = 30;
+        g5CountText.innerText = "Clicks: 0/100";
+        g5TimerText.innerText = "Remaining Time: 30s";
+        g5ResultText.innerText = "";
+        finishBtn.classList.add("hidden");
 
- g5TimerInterval = setInterval(function(){
- g5TimeLeft -= 1;
- g5TimerText.innerText = "Remaining Time: "+g5TimeLeft+"s";
+        g5TimerInterval = setInterval(function(){
+            g5TimeLeft -= 1;
+            g5TimerText.innerText = "Remaining Time: "+g5TimeLeft+"s";
 
- if(g5TimeLeft <=0){
- clearInterval(g5TimerInterval);
- alert("You failed! Now you will have to retry!");
- startGame5();
- }
- }, 1000);
- }
+            if(g5TimeLeft <=0){
+                clearInterval(g5TimerInterval);
+                alert("You failed! Now you will have to retry!");
+                startGame5();
+            }
+        }, 1000);
+    }
 
- g5Bar.addEventListener("click", function() {
- if(g5Clicks >= 100) return;
- g5Clicks += 1;
- g5CountText.innerText = "Clicks: " + g5Clicks + "/100";
+    g5Bar.addEventListener("click", function() {
+        if(g5Clicks >= 100) return;
+        g5Clicks += 1;
+        g5CountText.innerText = "Clicks: " + g5Clicks + "/100";
 
- if(g5Clicks === 100) {
- clearInterval(g5TimerInterval);
- g5Timing.value = Math.floor((Date.now()-gameStartTimes.g5)/1000);
- g5ResultText.innerText = "✅ Completed!";
- finishBtn.classList.remove("hidden");
- }
- });
+        if(g5Clicks === 100) {
+            clearInterval(g5TimerInterval);
+            g5Timing.value = Math.floor((Date.now()-gameStartTimes.g5)/1000);
+            g5ResultText.innerText = "✅ Completed!";
+            finishBtn.classList.remove("hidden");
+        }
+    });
 
- function stopAudio(){
- mainAlarmAudio.pause();
- mainAlarmAudio.currentTime = 0;
- }
+    function stopAudio(){
+       mainAlarmAudio.pause();
+       mainAlarmAudio.currentTime = 0;
+    }
 
 
- </script>
+   </script>
 </body>
 </html> 
