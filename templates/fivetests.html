@@ -276,7 +276,7 @@
         const g2TimerText = document.getElementById("g2-timer");
         const g2QText = document.getElementById("g2-question");
         const g2Input = document.getElementById("g2-answer");
-        const g2SummitBtn = document.getElementById("g2-submit");
+        const g2SubmitBtn = document.getElementById("g2-submit");
         const g2CountText = document.getElementById("g2-count-text");
 
         function generateMathQuestion(){
@@ -309,7 +309,7 @@
             generateMathQuestion();
         }
 
-        g2SummitBtn.addEventListener("click", function() {
+        g2SubmitBtn.addEventListener("click", function() {
             let userAns = parseInt(g2Input.value);
 
             if(userAns == ans){
