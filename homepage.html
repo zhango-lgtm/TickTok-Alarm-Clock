@@ -215,6 +215,7 @@
             if (currentAlarm) {
                 const seconds = Math.floor((Date.now() - currentAlarm.startTime) / 1000);
 
+                console.log("Submitting...");
                 secondsHidden.value = seconds;
                 soundHidden.value = currentAlarm.sound;
 
