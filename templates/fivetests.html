@@ -288,8 +288,8 @@
         }
 
         function startGame2(){
-            //clearInterval(g2TimerInterval);
-            //gameStartTimes.g2 = Date.now();
+            clearInterval(g2TimerInterval);
+            gameStartTimes.g2 = Date.now();
             g2FinishedQ = 0;
             g2TimeLeft = 30;
             g2TimerText.innerText = "Remaining Time: 30s";
@@ -392,8 +392,8 @@
     let g5TimerInterval;
 
     function startGame5() {
-        //clearInterval(g5TimerInterval);
-        //gameStartTimes.g5 = Date.now();
+        clearInterval(g5TimerInterval);
+        gameStartTimes.g5 = Date.now();
         g5Clicks = 0;
         g5TimeLeft = 30;
         g5CountText.innerText = "Clicks: 0/100";
