@@ -329,15 +329,16 @@
             else{
                 g2CountText.innerText = "❌Finished: "+g2FinishedQ+"/10, try again";
             }
+        })
 
         g2Input.addEventListener("keydown", function(e) {
             if (e.key === "Enter") {
                 e.preventDefault();
                 g2SubmitBtn.click();
             }
-});
-
         })
+
+
          
 
     let ansReverse = "reilrae peels ot esimorp I"
@@ -356,6 +357,7 @@
         else{
             g3ResultText.innerText = "Wrong reverse text, try again";
         }
+    })
 
     g3Input.addEventListener("keydown", function(e) {
         if (e.key === "Enter") {
@@ -393,6 +395,7 @@
         else{
             hintText.innerText = userGuess < randNum ? "Try higher" : "Try lower";
         }
+    })
 
     g4Input.addEventListener("keydown", function(e) {
         if (e.key === "Enter") {

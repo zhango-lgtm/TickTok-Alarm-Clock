@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for, session
 import statistics
 import pandas as pd
+import os
 
 app = Flask(__name__)
 app.secret_key = "randomsecretkey123456"
@@ -134,7 +135,7 @@ def stats():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)))
+    app.run(host='0.0.0.0', port=int(os.getenv('PORT', 3000)))
 
 
 
