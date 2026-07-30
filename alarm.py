@@ -15,9 +15,10 @@ def homepage():
 
 @app.route("/fivetests", methods=["POST"])
 def fivetests():
+    input_username = request.form.get("user_name", "")
     selected_sound = request.form.get("alarm-sound", "")
     alarm_react_secs = request.form.get("time-to-finish", 0)
-    return render_template("fivetests.html", audio_filename=alarm_sound, alarm_react_secs=alarm_react_secs)
+    return render_template("fivetests.html", audio_filename=alarm_sound, alarm_react_secs=alarm_react_secs, input_username=input_username)
 
 
 @app.route("/submit_timings", methods=["POST"])

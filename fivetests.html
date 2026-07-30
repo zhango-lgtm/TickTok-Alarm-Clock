@@ -121,11 +121,13 @@
         <div id="g5-bar" class="submit-answer">Click Here</div>
         <p id="g5-result"></p>
         <form id="finish-form" action="/submit_timings" method="post" onsubmit="stopAudio()">
+            <input type="hidden" name="user_name" value="{{input_username}}">
             <input type="hidden" name="g1" id="g1-timing" value="0">
             <input type="hidden" name="g2" id="g2-timing" value="0">
             <input type="hidden" name="g3" id="g3-timing" value="0">
             <input type="hidden" name="g4" id="g4-timing" value="0">
             <input type="hidden" name="g5" id="g5-timing" value="0">
+            <input type="hidden" name="alarm_react" value="{{alarm_react_secs}}">
             <button type="submit" id="finish-button" class="submit-answer hidden">Finish</button>
         </form>
    </div>
