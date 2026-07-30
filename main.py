@@ -77,7 +77,7 @@ def stats():
     user_name = request.args.get("user_name", "Anonymous")
     total_time = int(request.args.get("total_time", 0))
 
-    all_records = pd.read_sql("SELECT * FROM runs", con = DATABASE)
+    all_records = pd.read_sql("SELECT * FROM runs", con = engine)
 
     def get_better_percent(user_time, column):
         total_num = all_records.shape[0]
