@@ -81,12 +81,10 @@
     </div>
 
     <!-- Play the audio based on which alarm sound was selected -->
-    <audio
-        id="alarm-sound"
-        loop
-        src="alarm.mp3"
-        preload="auto">
-    </audio>
+    <audio id="mainAlarmAudio" loop preload="auto">
+    {% if audio_filename %}
+        <source src="{{audio_filename}}">
+    {% endif %}
 
     <script>
         let alarms = [];

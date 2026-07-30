@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, redirect, url_for, session
+from sqlalchemy import create_engine
 import statistics
 import pandas as pd
 import os
@@ -6,6 +7,7 @@ import os
 app = Flask(__name__)
 app.secret_key = "randomsecretkey123456"
 DATABASE = "sqlite:///ticktok.db"
+db_engine = create_engine(DATABASE)
 
 
 
@@ -33,7 +35,7 @@ def submit_game_times():
 
     total_time = g1 + g2 + g3 + g4 + g5
 
-    df = pd.read_sql("SELECT MAX(run_id) as max_id FROM runs", con=DATABASE)
+    df = pd.read_sql("SELECT MAX(run_id) AS max_id FROM runs", con=db_engine)
     new_run_id = 1 if df["max_id"][0] is None else int(df["max_id"][0]) + 1
     
     new_row = pd.DataFrame([{
@@ -47,7 +49,7 @@ def submit_game_times():
         "g5": g5,
         "total_time": total_time
     }])
-    new_row.to_sql("runs", con=DATABASE, if_exists="append", index=False)
+    new_row.to_sql("runs", con=db_engine, if_exists="append", index=False)
 
     return redirect(
         url_for("stats",
