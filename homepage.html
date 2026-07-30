@@ -18,6 +18,11 @@
             <div id="current-date">Loading date...</div>
         </section>
 
+        <section>
+            <label>Name for Leaderboard:</label>
+            <input type="text" id="player-name-input" maxlength="20" placeholder="Anonymous">
+        </section>
+
         <section class="alarm-builder">
             <form id="alarm-form">
                 <div class="form-group">
@@ -56,9 +61,10 @@
         <div class="modal">
             <h2>Wake Up!!</h2>
             <p id="modal-label-text">Your scheduled alarm is ringing</p>
-            <form id="finish-form" action="/game" method="post">
-                <input type="hidden" name="time-to-finish" id="seconds-to-click" value=0>
-                <input type="hidden" name="alarm-sound" id="alarm-sound-hidden" value=0>
+            <form id="finish-form" action="/fivetests" method="POST">
+                 <input type="hidden" name="user_name" id="hidden-user-name">
+                <input type="hidden" name="time-to-finish" id="seconds-to-click" value="0">
+                <input type="hidden" name="alarm-sound" id="alarm-sound-hidden" value="">
                 <button class="nes-btn is-error" id="stop-alarm-btn">Dismiss Alarm</button>
             </form>
         </div>
@@ -221,6 +227,8 @@
                 secondsHidden.value = seconds;
                 soundHidden.value = currentAlarm.sound;
 
+                copyPlayerName();
+
                 currentAlarm = null;
 
                 finishForm.submit();
@@ -230,6 +238,11 @@
 
         setInterval(updateClock, 1000);
         updateClock();
+
+        function copyPlayerName() {
+            const typedName = document.getElementById("player-name-input").value.trim();
+            document.getElementById("hidden-user-name").value = typedName;
+        }
 
     </script>
     </div>
