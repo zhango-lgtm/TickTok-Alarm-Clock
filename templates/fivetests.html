@@ -75,6 +75,7 @@
         {% endif %}
     </audio>
 
+    <!-- Quick test buttons for debugging and manual navigation between games -->
     <div class="test-control">
         <h4>Quick Test Buttons (Jump to any game directly)</h4>
         <button id="testG1">Test Game1</button>
@@ -84,8 +85,10 @@
         <button id="testG5">Test Game5</button>
     </div>
 
+
    <div class="page2-container">
 
+    <!-- Game 1: click the moving button 10 times -->
     <div id='game1' class = 'game-box'>
         <h3 class = "game-title">Game1: Click moving button 10 times</h3>
         <p id = 'g1-count-text' class='count-text'>Click: 0/10</p>
@@ -93,6 +96,7 @@
         <div class="submit-answer" id="moving-fake-button">(-1) Click 67!</div>
     </div>
 
+    <!-- Game 2: solve 10 multiplication questions within 30 seconds -->
     <div id='game2' class = 'game-box hidden'>
         <h3 class = "game-title">Game2: Answer 10 math questions (30s limit)</h3>
         <p id="g2-count-text" class='count-text'>Finished: 0/10</p>
@@ -103,6 +107,7 @@
         <button class="submit-answer" id="g2-submit">Submit</button>
    </div>
 
+   <!-- Game 3: type the sentence backwards -->
    <div id='game3' class = 'game-box hidden'>
         <h3 class = "game-title">Game3: Write the sentence backwards: I promise to sleep earlier</h3>
         <input type="text" class="answer-input" id = "g3-answer" placeholder="Enter your answer">
@@ -110,6 +115,7 @@
         <p id = "g3-result"></p>
    </div>
 
+   <!-- Game 4: guess the random number within five tries -->
    <div id='game4' class = 'game-box hidden'>
         <h3 class = "game-title">Game4: Guess random number (1-20), max 5 tries</h3>
         <p id="g4-count-text" class='count-text'>Remaining tries:5</p>
@@ -118,6 +124,7 @@
         <button class="submit-answer" id="g4-submit">Submit</button>
    </div>
 
+   <!-- Game 5: click the bar 100 times within 30 seconds -->
    <div id='game5' class='game-box hidden'>
         <h3 class="game-title">Game5: Click the bar 100 times in 30 seconds</h3>
         <p id="g5-count-text" class='count-text'>Clicks: 0/100</p>
@@ -141,6 +148,7 @@
 
    <script>
 
+        // Track the start time of each game so the app can measure completion time.
         let gameStartTimes = {
             g1: null,
             g2: null,
@@ -172,7 +180,9 @@
         const rightSound = document.getElementById("click-correct-sound");
         const wrongSound = document.getElementById("click-wrong-sound");
 
+        // Game 1: clicking the moving target increases the counter.
         document.getElementById("moving-button").addEventListener("click", function(){
+            //sound effect for clicking the button
             rightSound.currentTime = 0;
             rightSound.play().catch(() => {});
             setTimeout(() => {
@@ -182,6 +192,7 @@
         });
 
         document.getElementById("moving-fake-button").addEventListener("click", function(){
+            //sound effect for clicking the button
             wrongSound.currentTime = 0;
             wrongSound.play().catch(() => {});
             setTimeout(() => {
@@ -190,49 +201,6 @@
             }, 1000);
         });
 
-        function hideAllGame() {
-            g1Box.classList.add("hidden");
-            g2Box.classList.add("hidden");
-            g3Box.classList.add("hidden");
-            g4Box.classList.add("hidden");
-            g5Box.classList.add("hidden");
-            hideFinishButton();
-        }
-
-        // Test button logic
-        document.getElementById("testG1").onclick = function() {
-            hideAllGame();
-            g1Box.classList.remove("hidden");
-            g1ClickNum = 0;
-            g1CountText.innerText = "Click: 0/10";
-            gameStartTimes.g1 = Date.now();
-        }
-        document.getElementById("testG2").onclick = function() {
-            hideAllGame();
-            g2Box.classList.remove("hidden");
-            startGame2();
-        }
-        document.getElementById("testG3").onclick = function() {
-            hideAllGame();
-            g3Box.classList.remove("hidden");
-            g3UserInput.value = "";
-            g3ResultText.innerText = "";
-            gameStartTimes.g3 = Date.now();
-        }
-        document.getElementById("testG4").onclick = function() {
-            hideAllGame();
-            g4Box.classList.remove("hidden");
-            tries = 5;
-            randNum = Math.floor(Math.random() * 20) + 1;
-            tryCountdown.innerText = "Remaining tries: " + tries;
-            hintText.innerText = "";
-            gameStartTimes.g4 = Date.now();
-        }
-        document.getElementById("testG5").onclick = function() {
-            hideAllGame();
-            g5Box.classList.remove("hidden");
-            startGame5();
-        }
 
         let g1ClickNum = 0
         const g1MoveBtn = document.getElementById("moving-button");
@@ -240,11 +208,12 @@
         const g1FakeBtn = document.getElementById("moving-fake-button");
         gameStartTimes.g1 = Date.now();
 
+        //random place for the buttons to go
         function refreshPosG1(){
             let x = Math.random() * 500;
             let y = Math.random() * 500;
-            let width = 80 - Math.random() * 40;
-            let height = 40 - Math.random() * 20;
+            let width = 300 - Math.random() * 50;
+            let height = 70 - Math.random() * 20;
 
             g1MoveBtn.style.left = x + "px";
             g1MoveBtn.style.top = y + "px";
@@ -253,8 +222,8 @@
 
             let x1 = Math.random() * 500;
             let y1 = Math.random() * 500;
-            let width1 = 80 - Math.random() * 40;
-            let height1 = 40 - Math.random() * 20;
+            let width1 = 300 - Math.random() * 50;
+            let height1 = 70 - Math.random() * 20;
 
             g1FakeBtn.style.left = x1 + "px";
             g1FakeBtn.style.top = y1 + "px";
@@ -262,11 +231,14 @@
             g1FakeBtn.style.height = height1 + "px"
         }
 
+        //change button place every 800ms
         setInterval(refreshPosG1, 800);
 
+         //The right button to click (+1)
         g1MoveBtn.addEventListener("click", function(){
             g1ClickNum += 1;
             g1CountText.innerText = "Click: "+g1ClickNum+"/10";
+            //if the score gets to 10, move on to the next game
             if(g1ClickNum == 10){
                 g1Timing.value = Math.floor((Date.now() - gameStartTimes.g1)/1000);
                 g1Box.classList.add("hidden");
@@ -276,11 +248,13 @@
 
         })
 
+         //The wrong button to click (-1)
         g1FakeBtn.addEventListener("click", function() {
             g1ClickNum -= 1;
             g1CountText.innerText = "Click: "+g1ClickNum+"/10";
         })
 
+        // Game 2: generate and evaluate multiplication questions
         let ans = 0;
         let g2FinishedQ = 0;
         let g2TimeLeft = 30;
@@ -301,6 +275,7 @@
         }
 
         function startGame2(){
+            //clean status if the game is restarted
             clearInterval(g2TimerInterval);
             gameStartTimes.g2 = Date.now();
             g2FinishedQ = 0;
@@ -319,6 +294,7 @@
                     startGame2();
                 }
             },1000);
+            //generate math question the first time
             generateMathQuestion();
         }
 
@@ -336,7 +312,6 @@
                     g3Box.classList.remove("hidden");
                     gameStartTimes.g3 = Date.now();
                 }
-
                 generateMathQuestion();
             }
             else{
@@ -344,6 +319,7 @@
             }
         })
 
+        //use enter to submit
         g2Input.addEventListener("keydown", function(e) {
             if (e.key === "Enter") {
                 e.preventDefault();
@@ -354,6 +330,7 @@
 
          
 
+    // Game 3: compare the user's answer to the reverse of the required sentence
     let ansReverse = "reilrae peels ot esimorp I"
     const g3SubmitBtn = document.getElementById("g3-submit")
     const g3ResultText = document.getElementById("g3-result"); 
@@ -372,6 +349,7 @@
         }
     })
 
+    //use enter to submit
     g3Input.addEventListener("keydown", function(e) {
         if (e.key === "Enter") {
             e.preventDefault();
@@ -379,6 +357,7 @@
         }
     })
 
+    // Game 4: guess the hidden number with a limited number of tries.
     let randNum = Math.floor(Math.random()*20)+1;
     let tries = 5;
 
@@ -392,19 +371,23 @@
         tries -= 1;
         tryCountdown.innerText = "Remaining tries: " + tries;
 
+        //if the number is guessed, move on to the next game
         if(userGuess === randNum){
             g4Timing.value = Math.floor((Date.now()-gameStartTimes.g4)/1000);
             g4Box.classList.add("hidden");
             g5Box.classList.remove("hidden");
             startGame5();
         }
+        //if all tries are used out, restart the game
         else if(tries <=0) {
             alert("Out of tries! Restarting game 4.");
+            //restart game logic looped inside
             tries = 5;
             randNum = Math.floor(Math.random() * 20) + 1;
             tryCountdown.innerText = "Remaining tries: " + tries;
             hintText.innerText = ""
         }
+        //hint text
         else {
             if (userGuess < randNum) {
                 hintText.innerText = "⬆️ TRY HIGHER!";
@@ -432,6 +415,7 @@
         }
     })
 
+    //user enter to submit game
     g4Input.addEventListener("keydown", function(e) {
         if (e.key === "Enter") {
             e.preventDefault();
@@ -439,6 +423,7 @@
         }
     })
 
+    // Game 5: count rapid clicks and reveal the finish button on success.
     const g5TimerText = document.getElementById("g5-timer");
     const g5CountText = document.getElementById("g5-count-text");
     const g5Bar = document.getElementById("g5-bar");
@@ -483,6 +468,7 @@
         }
     });
 
+    // Stop the alarm audio when the user submits the results.
     function stopAudio(){
        mainAlarmAudio.pause();
        mainAlarmAudio.currentTime = 0;
