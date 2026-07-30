@@ -98,6 +98,18 @@
         const soundHidden = document.getElementById("alarm-sound-hidden");
         const finishForm = document.getElementById("finish-form");
 
+        // ===== SESSION STORAGE HELPERS =====
+        function loadAlarmsFromStorage() {
+            const saved = sessionStorage.getItem("saved_alarms");
+            if(saved){
+                alarms = JSON.parse(saved);
+            }
+        }
+        function saveAlarmsToStorage() {
+            sessionStorage.setItem("saved_alarms", JSON.stringify(alarms));
+        }
+        // ================================================================
+
         function updateClock() {
             const now = new Date();
 
@@ -132,15 +144,15 @@
         function checkAlarms(currentTime24hr) {
             alarms.forEach((alarm, index) => {
                 if (alarm.time === currentTime24hr && !alarm.triggered) {
-                    triggerAlarm(alarm,index);
+                    triggerAlarm(alarm, index);
                 }
             });
         }
 
-
         function triggerAlarm(alarm, index) {
             alarms[index].triggered = true;
             alarms[index].startTime = Date.now();
+            saveAlarmsToStorage();
 
             currentAlarm = alarms[index];
 
@@ -159,18 +171,20 @@
             });
         }
 
-
         function renderAlarms() {
-            if (alarms.length === 0) {
+            // Only display alarms that have NOT triggered yet
+            const pendingAlarms = alarms.filter(alarm => !alarm.triggered);
+
+            if (pendingAlarms.length === 0) {
                 alarmsDeck.innerHTML = '<div id="no-alarms">No alarms scheduled</div>';
-                    return;
+                return;
             }
 
             alarmsDeck.innerHTML = '';
 
-            alarms.sort((a, b) => a.time.localeCompare(b.time)).forEach(alarm => {
+            pendingAlarms.sort((a, b) => a.time.localeCompare(b.time)).forEach(alarm => {
 
-                const [h,m] = alarm.time.split(':');
+                const [h, m] = alarm.time.split(':');
                 const hInt = parseInt(h, 10);
                 const ampm = hInt >= 12 ? 'PM' : 'AM';
                 const displayHour = hInt % 12 || 12;
@@ -178,16 +192,15 @@
                 const card = document.createElement('div');
                 card.className = 'alarm-card';
                 card.innerHTML = `
-                    <div class="alarm-info">
-                        <h4>${String(displayHour).padStart(2, '0')}:${m} ${ampm}</h4>
-                        <p>${alarm.label || 'No Label'}</p>
-                    </div>
-                    <button class="delete-btn" onclick="deleteAlarm('${alarm.id}')">Delete</button>
-                    `;
+                            <div class="alarm-info">
+                                <h4>${String(displayHour).padStart(2, '0')}:${m} ${ampm}</h4>
+                                <p>${alarm.label || 'No Label'}</p>
+                            </div>
+                            <button class="delete-btn" onclick="deleteAlarm('${alarm.id}')">Delete</button>
+                            `;
                 alarmsDeck.appendChild(card);
             });
         }
-
 
         alarmForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -200,20 +213,22 @@
                 triggered: false
             };
 
-            if(alarms.some(a => a.time === newAlarm.time)) {
+            if (alarms.some(a => a.time === newAlarm.time)) {
                 alert("An alarm is already configured for this specific timestamp.");
                 return;
             }
 
             alarms.push(newAlarm);
+            saveAlarmsToStorage();
             renderAlarms();
 
             alarmLabelInput.value = '';
             alarmTimeInput.value = '';
         });
 
-        window.deleteAlarm = function(id) {
+        window.deleteAlarm = function (id) {
             alarms = alarms.filter(alarm => alarm.id !== id);
+            saveAlarmsToStorage();
             renderAlarms();
         }
 
@@ -236,14 +251,16 @@
 
         });
 
-        setInterval(updateClock, 1000);
-        updateClock();
-
         function copyPlayerName() {
             const typedName = document.getElementById("player-name-input").value.trim();
             document.getElementById("hidden-user-name").value = typedName;
         }
 
+        // Initialize page
+        loadAlarmsFromStorage();
+        renderAlarms();
+        setInterval(updateClock, 1000);
+        updateClock();
     </script>
     </div>
 </body>
