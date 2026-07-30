@@ -402,10 +402,31 @@
             tryCountdown.innerText = "Remaining tries: " + tries;
             hintText.innerText = ""
         }
-        else{
-            hintText.innerText = userGuess < randNum ? "Try higher" : "Try lower";
-        }
-    })
+        else {
+            if (userGuess < randNum) {
+                hintText.innerText = "⬆️ TRY HIGHER!";
+            } else {
+                hintText.innerText = "⬇️ TRY LOWER!";
+            }
+
+            hintText.classList.remove("flash");
+            void hintText.offsetWidth;
+            hintText.classList.add("flash");
+
+            tryCountdown.classList.remove("flash");
+            void tryCountdown.offsetWidth;
+            tryCountdown.classList.add("flash");
+
+            if (tries >= 4) {
+                tryCountdown.style.color = "green";
+            }
+            else if (tries >= 2) {
+                tryCountdown.style.color = "orange";
+            }
+            else {
+                tryCountdown.style.color = "red";
+            }
+        })
 
     g4Input.addEventListener("keydown", function(e) {
         if (e.key === "Enter") {
