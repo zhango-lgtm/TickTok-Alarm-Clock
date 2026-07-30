@@ -6,7 +6,7 @@ app = Flask(__name__)
 app.secret_key = "randomsecretkey123456"
 DATABASE = "sqlite:///ticktok.db"
 
-user_stats = {}
+
 
 
 @app.route("/")
@@ -19,7 +19,6 @@ def fivetests():
     selected_sound = request.form.get("alarm-sound", "")
     alarm_react_secs = request.form.get("time-to-finish", 0)
     return render_template("fivetests.html", audio_filename=selected_sound, alarm_react_secs=alarm_react_secs, input_username=input_username)
-
 
 @app.route("/submit_timings", methods=["POST"])
 def submit_game_times():
