@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ultimate Online Alarm CLock</title>
+</head>
+<body>
+    <header>
+        <h1>TickTok</h1>
+    </header>
+
+    <main>
+        <section class="clock-display">
+            <div id="current-time">00:00:00 AM</div>
+            <div id="current-date">Loading date...</div>
+        </section>
+
+        <section class="alarm-builder">
+            <form id="alarm-form">
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <label for="alarm-time">Set Time</label>
+                        <input type="time" id="alarm-time" required>
+                    </div>
+                    <div class="input-wrapper">
+                        <label for="alarm-label">Label</label>
+                        <input type="text" id="alarm-label" placeholder="eg., Wake up!">
+                    </div>
+                </div>
+                <button type="submit">Set Alarm</button>
+            </form>
+
+            <div class="input-wrapper">
+                <label for="alarm-sound-select">Sound</label>
+                <select id="alarm-sound-select">
+                    <option value="https://files.catbox.moe/07bj0m.mp3">I Am a Coconut</option>
+                    <option value="https://files.catbox.moe/yoq0xy.mp3">4 Big Guys</option>
+                    <option value="https://files.catbox.moe/jf3xqc.mp3">67 on a Merry Christmas</option>
+                    <option value="https://files.catbox.moe/nce1qi.mp3">Fall For You</option>
+                    <option value="https://files.catbox.moe/tb5po1.mp3">Digital Alarm Clock</option>
+                </select>
+            </div>
+
+            <section class="alarms-list">
+                <h2>Scheduled Alarms</h2>
+                <div id="alarms-deck"></div>
+            </section>
+
+        </section>
+    </main>
+
+    <div class="modal-overlay" id="trigger-modal">
+        <div class="modal">
+            <h2>Wake Up!!</h2>
+            <p id="modal-label-text">Your scheduled alarm is ringing</p>
+            <form id="finish-form" action="/game" method="post">
+                <input type="hidden" name="time-to-finish" id="seconds-to-click" value=0>
+                <input type="hidden" name="alarm-sound" id="alarm-sound-hidden" value=0>
+                <button class="dismiss-btn" id="stop-alarm-btn">Dismiss Alarm</button>
+            </form>
+        </div>
+    </div>
+
+    <audio
+        id="alarm-sound"
+        loop
+        src="alarm.mp3"
+        preload="auto">
+    </audio>
+
+    <script>
+        let alarms = [];
+        let currentAlarm = null;
+
+        const currentTimeDisplay = document.getElementById('current-time');
+        const currentDateDisplay = document.getElementById('current-date');
+        const alarmForm = document.getElementById('alarm-form');
+        const alarmTimeInput = document.getElementById('alarm-time');
+        const alarmLabelInput = document.getElementById('alarm-label');
+        const alarmsDeck = document.getElementById('alarms-deck');
+        const triggerModal = document.getElementById('trigger-modal');
+        const modalLabelText = document.getElementById('modal-label-text');
+        const stopAlarmBtn = document.getElementById('stop-alarm-btn');
+        const alarmAudio = document.getElementById('alarm-sound');
+
+        const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const alarmSoundSelect = document.getElementById("alarm-sound-select");
+        const secondsHidden = document.getElementById("seconds-to-click");
+        const soundHidden = document.getElementById("alarm-sound-hidden");
+        const finishForm = document.getElementById("finish-form");
+
+        function updateClock() {
+            const now = new Date();
+
+            const timeOptions = {
+                timeZone: userTimezone,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            };
+
+            currentTimeDisplay.textContent = now.toLocaleTimeString('en-US', timeOptions);
+
+            const dateOptions = {
+                timeZone: userTimezone,
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            };
+
+            currentDateDisplay.textContent = now.toLocaleDateString('en-US', dateOptions);
+
+            const hours = String(now.getHours()).padStart(2, "0");
+            const minutes = String(now.getMinutes()).padStart(2, "0");
+
+            const matchingString = `${hours}:${minutes}`;
+
+            checkAlarms(matchingString);
+        }
+
+        function checkAlarms(currentTime24hr) {
+            alarms.forEach((alarm, index) => {
+                if (alarm.time === currentTime24hr && !alarm.triggered) {
+                    triggerAlarm(alarm,index);
+                }
+            });
+        }
+
+
+        function triggerAlarm(alarm, index) {
+            alarms[index].triggered = true;
+            alarms[index].startTime = Date.now();
+
+            currentAlarm = alarms[index];
+
+            modalLabelText.textContent =
+                alarm.label
+                    ? `Alarm: ${alarm.label}`
+                    : "Your scheduled alarm is ringing.";
+
+            triggerModal.classList.add("active");
+
+            alarmAudio.src = alarm.sound;
+            alarmAudio.load();
+
+            alarmAudio.play().catch(err => {
+                console.log("Couldn't play alarm:", err);
+            });
+        }
+
+
+        function renderAlarms() {
+            if (alarms.length === 0) {
+                alarmsDeck.innerHTML = '<div id="no-alarms">No alarms scheduled</div>';
+                    return;
+            }
+
+            alarmsDeck.innerHTML = '';
+
+            alarms.sort((a, b) => a.time.localeCompare(b.time)).forEach(alarm => {
+
+                const [h,m] = alarm.time.split(':');
+                const hInt = parseInt(h, 10);
+                const ampm = hInt >= 12 ? 'PM' : 'AM';
+                const displayHour = hInt % 12 || 12;
+
+                const card = document.createElement('div');
+                card.className = 'alarm-card';
+                card.innerHTML = `
+                    <div class="alarm-info">
+                        <h4>${String(displayHour).padStart(2, '0')}:${m} ${ampm}</h4>
+                        <p>${alarm.label || 'No Label'}</p>
+                    </div>
+                    <button class="delete-btn" onclick="deleteAlarm('${alarm.id}')">Delete</button>
+                    `;
+                alarmsDeck.appendChild(card);
+            });
+        }
+
+
+        alarmForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const newAlarm = {
+                id: Date.now().toString(),
+                time: alarmTimeInput.value,
+                label: alarmLabelInput.value.trim(),
+                sound: alarmSoundSelect.value,
+                triggered: false
+            };
+
+            if(alarms.some(a => a.time === newAlarm.time)) {
+                alert("An alarm is already configured for this specific timestamp.");
+                return;
+            }
+
+            alarms.push(newAlarm);
+            renderAlarms();
+
+            alarmLabelInput.value = '';
+            alarmTimeInput.value = '';
+        });
+
+        window.deleteAlarm = function(id) {
+            alarms = alarms.filter(alarm => alarm.id !== id);
+            renderAlarms();
+        }
+
+        stopAlarmBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            if (currentAlarm) {
+                const seconds = Math.floor((Date.now() - currentAlarm.startTime) / 1000);
+
+                secondsHidden.value = seconds;
+                soundHidden.value = currentAlarm.sound;
+
+                currentAlarm = null;
+
+                finishForm.submit();
+            }
+
+        });
+
+        setInterval(updateClock, 1000);
+        updateClock();
+
+    </script>
+
+</body>
+</html>
