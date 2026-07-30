@@ -4,6 +4,7 @@ import statistics
 import pandas as pd
 import os
 
+#use engine to be more stable
 app = Flask(__name__)
 app.secret_key = "randomsecretkey123456"
 DATABASE = "sqlite:///ticktok.db"
@@ -11,11 +12,12 @@ db_engine = create_engine(DATABASE)
 
 
 
-
+#direct to homepage.html
 @app.route("/")
 def homepage():
     return render_template("homepage.html")
 
+#get the data from fivetests and then direct to the tests
 @app.route("/fivetests", methods=["POST"])
 def fivetests():
     input_username = request.form.get("user_name", "")
@@ -23,6 +25,7 @@ def fivetests():
     alarm_react_secs = request.form.get("time-to-finish", 0)
     return render_template("fivetests.html", audio_filename=selected_sound, alarm_react_secs=alarm_react_secs, input_username=input_username)
 
+#get data for fivetests and store it in database
 @app.route("/submit_timings", methods=["POST"])
 def submit_game_times():
     alarm_react = int(request.form.get("alarm_react", 0))
@@ -35,9 +38,11 @@ def submit_game_times():
 
     total_time = g1 + g2 + g3 + g4 + g5
 
+    #find the biggest id and make the new id +1 of the old max id
     df = pd.read_sql("SELECT MAX(run_id) AS max_id FROM runs", con=db_engine)
     new_run_id = 1 if df["max_id"][0] is None else int(df["max_id"][0]) + 1
     
+
     new_row = pd.DataFrame([{
         "run_id": new_run_id,
         "user_name": user_name,
@@ -49,8 +54,10 @@ def submit_game_times():
         "g5": g5,
         "total_time": total_time
     }])
+    #store the data into the database
     new_row.to_sql("runs", con=db_engine, if_exists="append", index=False)
 
+    #
     return redirect(
         url_for("stats",
         alarm_react=alarm_react,
@@ -60,6 +67,7 @@ def submit_game_times():
     ))
 
 
+#analyze the data and send to stats.html
 @app.route("/stats")
 def stats():
     alarm_react = int(request.args.get("alarm_react", 0))
@@ -71,8 +79,10 @@ def stats():
     user_name = request.args.get("user_name", "Anonymous")
     total_time = int(request.args.get("total_time", 0))
 
+    #get the database called runs
     all_records = pd.read_sql("SELECT * FROM runs", con = DATABASE)
 
+    #function that finds the percentage of people the user is better than
     def get_better_percent(user_time, column):
         total_num = all_records.shape[0]
         if total_num < 2:
@@ -80,6 +90,7 @@ def stats():
         count_worser_time = all_records[all_records[column] > user_time].shape[0]
         return round((count_worser_time / (total_num-1)) * 100)
 
+    #calculate for each game what percentage of users did it beat
     pAlarm = get_better_percent(alarm_react, "alarm_react")
     pG1 = get_better_percent(g1, "g1")
     pG2 = get_better_percent(g2, "g2")
@@ -87,8 +98,10 @@ def stats():
     pG4 = get_better_percent(g4, "g4")
     pG5 = get_better_percent(g5, "g5")
 
+    #create the leaderboard
     leaderboard_dt = pd.read_sql("SELECT user_name, total_time FROM runs ORDER BY total_time ASC", con=DATABASE)
     leaderboard = leaderboard_dt.to_dict("records")
+    #find the rank of the user
     rank_list = []
     for data in leaderboard:
         single = data["total_time"]
@@ -106,6 +119,7 @@ def stats():
     user_best_game = ""
     user_best_p = -10000
 
+    #find which game did the user did best and which one did the user beat most users
     for game, time, percent in user_game_data:
         if percent > user_best_p:
             user_best_p = percent
