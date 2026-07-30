@@ -1,46 +1,129 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Statistics - Video Games Database</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TickTok - Results</title>
 </head>
+
 <body>
-    <main class="container">
-        <h1>Database Statistics</h1>
 
-        <p><a href="/">Back to all games</a></p>
+    <header>
+        <h1>TickTok Results</h1>
+        <p>Here's how you compared to everyone else!</p>
+    </header>
 
-        <article>
-            <h2>Overview</h2>
-            <p>Total games in database: <strong>{{ total_games }}</strong></p>
-            <p>Average rating: <strong>{{ "%.2f"|format(average_rating) }}</strong></p>
-        </article>
+    <hr>
 
-        <article>
-            <h2>Highest Rated Game</h2>
-            <p><strong>{{ highest_rated.title }}</strong> ({{ highest_rated.year }})</p>
-            <p>Rating: {{ highest_rated.rating }}/10</p>
-        </article>
+    <section>
+        <h2>Alarm Reaction</h2>
 
-        <article>
-            <h2>Games by Genre</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Genre</th>
-                        <th>Number of Games</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in genre_counts %}
-                    <tr>
-                        <td>{{ item.genre }}</td>
-                        <td>{{ item.count }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </article>
-    </main>
+        <p><strong>Your Time:</strong> {{ alarm_react }} seconds</p>
+
+        <p>
+            ⚡ You were faster than
+            <strong>{{ alarm_percentile }}%</strong>
+            of users.
+        </p>
+    </section>
+
+    <hr>
+
+    <!-- Game Results -->
+    <section>
+
+        <h2>Five Tests</h2>
+
+        <h3>Game 1</h3>
+        <p>Your Time: {{ g1 }} sec</p>
+        <p>Better than {{ g1_percentile }}% of users</p>
+
+        <h3>Game 2</h3>
+        <p>Your Time: {{ g2 }} sec</p>
+        <p>Better than {{ g2_percentile }}% of users</p>
+
+        <h3>Game 3</h3>
+        <p>Your Time: {{ g3 }} sec</p>
+        <p>Better than {{ g3_percentile }}% of users</p>
+
+        <h3>Game 4</h3>
+        <p>Your Time: {{ g4 }} sec</p>
+        <p>Better than {{ g4_percentile }}% of users</p>
+
+        <h3>Game 5</h3>
+        <p>Your Time: {{ g5 }} sec</p>
+        <p>Better than {{ g5_percentile }}% of users</p>
+
+    </section>
+
+    <hr>
+
+    <!-- Total Time -->
+    <section>
+
+        <h2>🏁 Overall Performance</h2>
+
+        <p>
+            <strong>Total Time:</strong>
+            {{ total_time }} seconds
+        </p>
+
+        <p>
+            <strong>Leaderboard Rank:</strong>
+            #{{ rank }}
+        </p>
+
+    </section>
+
+    <hr>
+
+    <!-- Leaderboard -->
+    <section>
+
+        <h2>Fastest Overall Runs</h2>
+
+        <table>
+
+            <tr>
+                <th>Rank</th>
+                <th>Total Time (sec)</th>
+            </tr>
+
+            {% for run in leaderboard %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ run.total_time }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+
+    </section>
+
+    <hr>
+
+    <!-- Summary -->
+    <section>
+
+        <h2>Summary</h2>
+
+        <p>
+            <strong>Best Game:</strong>
+            {{ best_game }}
+        </p>
+
+        <p>
+            <strong>Best Percentile:</strong>
+            {{ best_percentile }}%
+        </p>
+
+    </section>
+
+    <br>
+
+    <a href="/">
+        <button>Try Again</button>
+    </a>
+
 </body>
 </html>
