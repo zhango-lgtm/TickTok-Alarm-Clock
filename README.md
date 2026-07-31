@@ -31,7 +31,7 @@ Built with **Flask**, **SQLite**, **Pandas**, and **NES.css** for a fun pixel-ar
 
 ### 1. Moving Target Challenge
 
-Click a moving button **10 times** while avoiding fake penalty buttons.
+Click a moving button **10 times** while avoiding the fake penalty button.
 
 ### 2. Math Sprint
 
