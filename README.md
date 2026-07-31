@@ -152,7 +152,7 @@ All runs are stored in **SQLite**, allowing the leaderboard to persist across se
 
 ## Deployment
 
-This project is deployed on **Railway**.
+Try TickTok here:
 
-Live Demo: **Railway URL**
+**[https://your-app-name.up.railway.app](https://alert-cooperation-production.up.railway.app/)**
 
