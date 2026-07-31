@@ -100,7 +100,7 @@
 
    <!-- Game 3: type the sentence backwards -->
    <div id='game3' class = 'game-box hidden'>
-        <h3 class = "game-title">Game3: Write the sentence backwards: I promise to sleep earlier</h3>
+        <h3 class = "game-title" id="g3-question"></h3>
         <input type="text" class="answer-input" id = "g3-answer" placeholder="Enter your answer">
         <button class="submit-answer" id="g3-submit">Submit</button>
         <p id = "g3-result"></p>
@@ -223,7 +223,7 @@
         }
 
         //change button place every 800ms
-        setInterval(refreshPosG1, 800);
+        //setInterval(refreshPosG1, 800);
 
          //The right button to click (+1)
         g1MoveBtn.addEventListener("click", function(){
@@ -248,7 +248,7 @@
         // Game 2: generate and evaluate multiplication questions
         let ans = 0;
         let g2FinishedQ = 0;
-        let g2TimeLeft = 30;
+        let g2TimeLeft = 45;
         let g2TimerInterval;
 
         const g2TimerText = document.getElementById("g2-timer");
@@ -256,12 +256,28 @@
         const g2Input = document.getElementById("g2-answer");
         const g2SubmitBtn = document.getElementById("g2-submit");
         const g2CountText = document.getElementById("g2-count-text");
+        
 
         function generateMathQuestion(){
-            a = Math.floor(Math.random() * 10) + 1;
-            b = Math.floor(Math.random() * 10) + 1;
-            ans = a * b;
-            g2QText.innerText = a + " X " + b + " = ?";
+            sign = Math.floor(Math.random() * 3) + 1;
+            if(sign==1){
+                a = Math.floor(Math.random() * 100) + 1;
+                b = Math.floor(Math.random() * 100) + 1;
+                g2QText.innerText = a + " + " + b + " = ?";
+                ans = a + b;
+            }
+            if(sign==2){
+                a = Math.floor(Math.random() * 100) + 1;
+                b = Math.floor(Math.random() * 100) + 1;
+                g2QText.innerText = a + " - " + b + " = ?";
+                ans = a - b;
+            }
+            if(sign==3){
+                a = Math.floor(Math.random() * 20) + 1;
+                b = Math.floor(Math.random() * 20) + 1;
+                g2QText.innerText = a + " X " + b + " = ?";
+                ans = a * b;
+            }
             g2Input.value = "";
         }
 
@@ -270,7 +286,7 @@
             clearInterval(g2TimerInterval);
             gameStartTimes.g2 = Date.now();
             g2FinishedQ = 0;
-            g2TimeLeft = 30;
+            g2TimeLeft = 45;
             g2TimerText.innerText = "Remaining Time: 30s";
             g2CountText.innerText = "Finished: 0/10";
             clearInterval(g5TimerInterval);
@@ -301,7 +317,7 @@
                     g2Timing.value = Math.floor((Date.now() - gameStartTimes.g2)/1000);
                     g2Box.classList.add("hidden");
                     g3Box.classList.remove("hidden");
-                    gameStartTimes.g3 = Date.now();
+                    startGame3();
                 }
                 generateMathQuestion();
             }
@@ -321,14 +337,46 @@
          
 
     // Game 3: compare the user's answer to the reverse of the required sentence
-    let ansReverse = "reilrae peels ot esimorp I"
+    // Game3 reverse sentence question bank
+    let currentG3Answer = "";
+    let dict_questions = [
+        ["I promise to sleep earlier", "reilrae peels ot esimorp I"],
+        ["I need to rest every night", "thgin yreve tser ot deen I"],
+        ["Going to bed late hurts my body", "ydob ym struh etal deb ot gnioG"],
+        ["Sleep well to feel energetic", "citagrene leef ot llew peels"],
+        ["Late nights make me tired in class", "ssalc ni derit em ekam sthgin etaL"],
+        ["Healthy sleep fixes tired eyes", "seye derit sexif peels yhtlaeH"],
+        ["I will turn off my phone before bed", "deb erofeb enohp ym ffo nrut lliw I"],
+        ["Waking up early feels wonderful", "lufrednow sleef ylrae pu gnikaW"],
+        ["Too much screen time ruins sleep", "peels sniur emit neercs hcum ooT"],
+        ["Quiet room helps me fall asleep fast", "tsaf peels llaf em spleh moor teiuQ"],
+        ["Drink less coffee before midnight", "thgindim erofeb eeffoc ssel knirD"],
+        ["Fresh air helps me sleep deeper", "repeed peels em spleh ria hserF"],
+        ["No games one hour before bedtime", "emitbed erofeb ruoh eno semag oN"],
+        ["Dark room makes sleep more peaceful", "lufecsaep erom peels sekam moor kraD"],
+        ["I hate being sleepy during lessons", "snoissel gnirud ypeels gnieb etah I"]
+    ];
     const g3SubmitBtn = document.getElementById("g3-submit")
     const g3ResultText = document.getElementById("g3-result"); 
     const g3Input = document.getElementById("g3-answer");
+    const g3Question = document.getElementById("g3-question")
+
+
+    function startGame3(){
+        let randomIdx = Math.floor(Math.random() * dict_questions.length);
+        let pair = dict_questions[randomIdx];
+        let question = pair[0];
+        currentG3Answer = pair[1];
+
+        g3Question.innerText = "Write the reverse of: " + question;
+        g3Input.value = "";
+        g3ResultText.innerText = "";
+        gameStartTimes.g3 = Date.now();
+    }
 
     g3SubmitBtn.addEventListener("click", function(){
         let userText = g3Input.value.trim();
-        if(userText === ansReverse){
+        if(userText === currentG3Answer){
             g3Timing.value = Math.floor((Date.now() - gameStartTimes.g3)/1000);
             g3Box.classList.add("hidden");
             g4Box.classList.remove("hidden");

@@ -1,5 +1,5 @@
 import pandas as pd
-
+#create database
 DATABASE = "sqlite:///ticktok.db"
 
 columns = ["run_id", "user_name", "alarm_react", "g1", "g2", "g3", "g4", "g5", "total_time"]
