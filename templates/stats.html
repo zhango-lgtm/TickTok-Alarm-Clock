@@ -109,7 +109,7 @@
 
             <tbody>
 
-                {% for run in leaderboard %}
+                {% for run in leaderboard[:10] %}
                 <tr>
                     <td>{{ loop.index }}</td>
                     <td>{{ run.user_name or 'Anonymous' }}</td>
