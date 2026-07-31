@@ -141,6 +141,8 @@ source .venv/bin/activate
 
 ```bash
 pip install -r requirements.txt
+pip install sqlalchemy
+pip install numpy
 ```
 
 ### 4. Run the application
