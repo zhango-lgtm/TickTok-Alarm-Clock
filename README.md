@@ -126,7 +126,7 @@ TickTok-Alarm-Clock/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/TickTok-Alarm-Clock.git
+git clone https://github.com/zhango-lgtm/TickTok-Alarm-Clock
 cd TickTok-Alarm-Clock
 ```
 
