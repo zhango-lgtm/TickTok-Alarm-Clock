@@ -170,5 +170,5 @@ All runs are stored in **SQLite**, allowing the leaderboard to persist across se
 
 Try TickTok here:
 
-**[https://your-app-name.up.railway.app](https://alert-cooperation-production.up.railway.app/)**
+**(https://alert-cooperation-production.up.railway.app/)**
 
