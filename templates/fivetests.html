@@ -87,12 +87,12 @@
         <div class="submit-answer" id="moving-fake-button">(-1) Click 67!</div>
     </div>
 
-    <!-- Game 2: solve 10 multiplication questions within 30 seconds -->
+    <!-- Game 2: solve 10 multiplication questions within 45 seconds -->
     <div id='game2' class = 'game-box hidden'>
         <h3 class = "game-title">Game2: Answer 10 math questions (45s limit)</h3>
         <p id="g2-count-text" class='count-text'>Finished: 0/10</p>
         
-        <p id="g2-timer" class="timer">Remaining Time: 30s</p>
+        <p id="g2-timer" class="timer">Remaining Time: 45s</p>
         <p id="g2-question"></p>
         <input type="number" class="answer-input" id = "g2-answer" placeholder="Enter your answer">
         <button class="submit-answer" id="g2-submit">Submit</button>
@@ -368,7 +368,7 @@
         let question = pair[0];
         currentG3Answer = pair[1];
 
-        g3Question.innerText = "Write the reverse of: " + question;
+        g3Question.innerText = "Game3: Write the reverse of: " + question;
         g3Input.value = "";
         g3ResultText.innerText = "";
         gameStartTimes.g3 = Date.now();
