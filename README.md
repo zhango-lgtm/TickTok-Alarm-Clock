@@ -62,6 +62,10 @@ If a game is failed, it automatically restarts until completed.
 ### Mini-Games
 
 ![Game 1](screenshots/game1.png)
+![Game 2](screenshots/game2.png)
+![Game 3](screenshots/game3.png)
+![Game 4](screenshots/game4.png)
+![Game 5](screenshots/game5.png)
 
 ### Results & Leaderboard
 
