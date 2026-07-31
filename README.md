@@ -8,15 +8,22 @@ Built with **Flask**, **SQLite**, **Pandas**, and **NES.css** for a fun pixel-ar
 
 ## Features
 
-* Custom alarm scheduling
-* Multiple selectable alarm sounds
-* Alarm persistence using session storage
-* Optional custom username for leaderboard entries
-* Five sequential mini-games
-* Percentile-based performance statistics
-* Global leaderboard stored in SQLite
-* Correct / incorrect sound effects
-* Retro UI powered by **NES.css**
+- Create and manage custom alarms
+- Session-based alarm storage so alarms persist while navigating between pages
+- Choose from multiple custom alarm sounds
+- Optional custom alarm labels
+- Optional leaderboard username (or remain anonymous)
+- Five wake-up mini-games:
+  1. Chase a moving target while avoiding fake buttons
+  2. Solve 10 random arithmetic questions against the clock
+  3. Type a randomly selected sentence backwards
+  4. Guess a random number within five attempts
+  5. Click a target 100 times before time expires
+- Automatic retry for failed challenge games
+- Tracks alarm reaction time and each game's completion time
+- Personal statistics page showing percentiles and best-performing game
+- Persistent Top 10 leaderboard ranked by total completion time
+- Retro NES.css-inspired interface
 
 ---
 
@@ -24,7 +31,7 @@ Built with **Flask**, **SQLite**, **Pandas**, and **NES.css** for a fun pixel-ar
 
 ### 1. Moving Target Challenge
 
-Click a moving button **10 times** while avoiding fake penalty buttons.
+Click a moving button **10 times** while avoiding the fake penalty button.
 
 ### 2. Math Sprint
 
@@ -64,14 +71,23 @@ Add a screenshot here
 
 ## How It Works
 
-1. Open the homepage.
-2. Enter a leaderboard name (or stay anonymous).
-3. Set an alarm time and choose a sound.
-4. When the alarm triggers, a looping alert sound begins.
-5. Complete all five mini-games in order.
-6. Submit your results. The alarm stops and your statistics are saved.
-7. View your **percentile rankings**, **best game**, and **leaderboard position** on the results page.
-
+1. Enter an optional leaderboard name (or leave it blank to appear as **Anonymous**).
+2. Create an alarm by choosing:
+   - a time,
+   - an optional label,
+   - and a custom alarm sound.
+3. Your scheduled alarms are saved in session storage and remain available while navigating the site.
+4. When the alarm triggers:
+   - the selected audio begins looping,
+   - your alarm reaction time starts being recorded,
+   - and you're prompted to dismiss the alarm.
+5. Dismissing the alarm launches five wake-up mini-games.
+6. Complete every challenge in order. If you fail a timed challenge, it automatically restarts.
+7. After finishing all five games:
+   - the alarm sound stops,
+   - your reaction time and game times are submitted,
+   - your leaderboard ranking is updated,
+   - and a statistics page displays your performance compared with other users.
 ---
 
 ## Tech Stack
@@ -92,6 +108,7 @@ Add a screenshot here
 ```
 TickTok-Alarm-Clock/
 ├── main.py
+├── create_db.py
 ├── requirements.txt
 ├── ticktok.db
 ├── static/
@@ -109,7 +126,7 @@ TickTok-Alarm-Clock/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/TickTok-Alarm-Clock.git
+git clone https://github.com/zhango-lgtm/TickTok-Alarm-Clock
 cd TickTok-Alarm-Clock
 ```
 
@@ -154,5 +171,5 @@ All runs are stored in **SQLite**, allowing the leaderboard to persist across se
 
 Try TickTok here:
 
-**[https://your-app-name.up.railway.app](https://alert-cooperation-production.up.railway.app/)**
+**(https://alert-cooperation-production.up.railway.app/)**
 
