@@ -57,15 +57,16 @@ If a game is failed, it automatically restarts until completed.
 
 ### Homepage
 
-Add a screenshot here
+![Homepage](screenshots/homepage.png)
 
 ### Mini-Games
 
-Add a screenshot here
+![Game 1](screenshots/game1.png)
 
 ### Results & Leaderboard
 
-Add a screenshot here
+![Stats](screenshots/stats1.png)
+![Stats](screenshots/stats2.png)
 
 ---
 
